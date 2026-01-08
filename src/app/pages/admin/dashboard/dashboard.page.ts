@@ -21,6 +21,15 @@ export class DashboardPage implements OnInit {
   public ideas = signal<IIdea[]>([]);
   public currentStatus = signal('RECEIVED');
 
+  // Métricas del dashboard (mock data por ahora)
+  public metrics = signal({
+    totalIdeas: 1247,
+    selectedIdeas: 89,
+    reviewedIdeas: 456,
+    pendingIdeas: 702,
+    fundTotal: 50000
+  });
+
   ngOnInit() {
     this.loadIdeas();
   }

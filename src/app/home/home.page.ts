@@ -6,11 +6,12 @@ import { ApiService } from '../core/services/api.service';
 import { IPublicStatus } from '../shared/interfaces/public-status.interface';
 import { SubmitIdeaModalComponent } from '../shared/components/submit-idea-modal/submit-idea-modal.component';
 import { register } from 'swiper/element/bundle';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [IonicModule, CommonModule, CurrencyPipe, DatePipe],
+  imports: [IonicModule, CommonModule, CurrencyPipe, DatePipe, TranslateModule],
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -20,7 +21,6 @@ export class HomePage implements OnInit {
   private modalCtrl = inject(ModalController);
   private router = inject(Router);
 
-  // Estado reactivo NASA-level
   public status = signal<IPublicStatus | null>(null);
 
   ngOnInit() {

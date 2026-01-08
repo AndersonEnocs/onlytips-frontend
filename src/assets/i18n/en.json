@@ -1,0 +1,12 @@
+{
+  "home": {
+    "title": "Your idea deserves<br><span class=\"accent\">a decision.</span>",
+    "subtitle": "Human validation. No algorithms. Real impact.",
+    "submitButton": "Submit your idea — {{fee}}",
+    "admin": "ADMIN",
+    "fundLabel": "OnlyTips Fund:",
+    "explanationTitle": "What is OnlyTips?",
+    "explanationText": "OnlyTips is a revolutionary platform where innovators submit their groundbreaking ideas for human validation. Unlike algorithmic systems, our expert reviewers provide real, thoughtful decisions on funding and selection. Your idea deserves a decision – submit it today and join the future of innovation.",
+    "recentDecisions": "RECENT DECISIONS"
+  }
+}

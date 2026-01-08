@@ -5,9 +5,9 @@
 
     <header class="nasa-header">
       <div class="logo">ONLYTIPS</div>
-      <div class="admin-link" (click)="goToAdmin()">ADMIN</div>
+      <div class="admin-link" (click)="goToAdmin()">{{ 'home.admin' | translate }}</div>
       <div class="fund-counter">
-        <span class="label">OnlyTips Fund:</span>
+        <span class="label">{{ 'home.fundLabel' | translate }}</span>
         <span class="value">{{ status()?.fundTotal | currency:'USD' }}</span>
       </div>
     </header>
@@ -32,23 +32,23 @@
 
 
     <main class="content-center">
-      <h1 class="main-title">Your idea deserves<br><span class="accent">a decision.</span></h1>
-      <p class="subtitle">Human validation. No algorithms. Real impact.</p>
+      <h1 class="main-title" [innerHTML]="'home.title' | translate"></h1>
+      <p class="subtitle">{{ 'home.subtitle' | translate }}</p>
 
       <ion-button class="btn-tesla" (click)="openSubmitModal()">
-        Submit your idea — {{ status()?.submissionFee | currency:'USD' }}
+        {{ 'home.submitButton' | translate:{fee: (status()?.submissionFee | currency:'USD')} }}
       </ion-button>
     </main>
 
     <!-- Explanation Section -->
     <section class="explanation-section">
-      <h2 class="explanation-title">What is OnlyTips?</h2>
-      <p class="explanation-text">OnlyTips is a revolutionary platform where innovators submit their groundbreaking ideas for human validation. Unlike algorithmic systems, our expert reviewers provide real, thoughtful decisions on funding and selection. Your idea deserves a decision – submit it today and join the future of innovation.</p>
+      <h2 class="explanation-title">{{ 'home.explanationTitle' | translate }}</h2>
+      <p class="explanation-text">{{ 'home.explanationText' | translate }}</p>
     </section>
 
     <!-- Bloque de Decisiones Recientes (Noosfera) -->
     <section class="decisions-track">
-      <div class="track-header">RECENT DECISIONS</div>
+      <div class="track-header">{{ 'home.recentDecisions' | translate }}</div>
       <div class="track-list">
         @for (item of status()?.recentDecisions; track item._id) {
           <div class="decision-card glass">

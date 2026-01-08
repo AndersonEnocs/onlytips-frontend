@@ -1,0 +1,12 @@
+{
+  "home": {
+    "title": "Sua ideia merece<br><span class=\"accent\">uma decisão.</span>",
+    "subtitle": "Validação humana. Sem algoritmos. Impacto real.",
+    "submitButton": "Envie sua ideia — {{fee}}",
+    "admin": "ADMIN",
+    "fundLabel": "Fundo OnlyTips:",
+    "explanationTitle": "O que é OnlyTips?",
+    "explanationText": "OnlyTips é uma plataforma revolucionária onde os inovadores enviam suas ideias inovadoras para validação humana. Ao contrário dos sistemas algorítmicos, nossos revisores especialistas fornecem decisões reais e reflexivas sobre financiamento e seleção. Sua ideia merece uma decisão – envie hoje e junte-se ao futuro da inovação.",
+    "recentDecisions": "DECISÕES RECENTES"
+  }
+}

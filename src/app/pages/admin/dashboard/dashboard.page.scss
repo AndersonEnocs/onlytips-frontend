@@ -8,6 +8,70 @@
   .title { letter-spacing: 4px; font-weight: 800; font-size: 0.8rem; }
 }
 
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+
+  .metric-card {
+    background: var(--tesla-glass);
+    border: 1px solid var(--tesla-border);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .metric-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--tesla-accent), #00d4ff);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      ion-icon {
+        font-size: 24px;
+        color: #000;
+      }
+    }
+
+    .metric-content {
+      h2 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1;
+      }
+
+      p {
+        margin: 5px 0 0;
+        font-size: 0.8rem;
+        color: #aaa;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    &.fund-card {
+      grid-column: span 2;
+
+      .metric-icon {
+        background: linear-gradient(135deg, #ffd700, #ff8c00);
+      }
+    }
+  }
+}
+
 .filter-bar {
   display: flex; gap: 10px; padding: 20px;
   ion-chip {

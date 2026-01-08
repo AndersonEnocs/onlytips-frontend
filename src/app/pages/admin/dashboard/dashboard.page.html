@@ -6,6 +6,59 @@
 </ion-header>
 
 <ion-content>
+  <!-- Professional Metrics Dashboard -->
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-icon">
+        <ion-icon name="bulb-outline"></ion-icon>
+      </div>
+      <div class="metric-content">
+        <h2>{{ metrics().totalIdeas | number }}</h2>
+        <p>Total Ideas</p>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+      </div>
+      <div class="metric-content">
+        <h2>{{ metrics().selectedIdeas | number }}</h2>
+        <p>Selected Ideas</p>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon">
+        <ion-icon name="eye-outline"></ion-icon>
+      </div>
+      <div class="metric-content">
+        <h2>{{ metrics().reviewedIdeas | number }}</h2>
+        <p>Reviewed Ideas</p>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon">
+        <ion-icon name="time-outline"></ion-icon>
+      </div>
+      <div class="metric-content">
+        <h2>{{ metrics().pendingIdeas | number }}</h2>
+        <p>Pending Ideas</p>
+      </div>
+    </div>
+
+    <div class="metric-card fund-card">
+      <div class="metric-icon">
+        <ion-icon name="cash-outline"></ion-icon>
+      </div>
+      <div class="metric-content">
+        <h2>{{ metrics().fundTotal | currency:'USD':'symbol':'1.0-0' }}</h2>
+        <p>OnlyTips Fund</p>
+      </div>
+    </div>
+  </div>
+
   <div class="filter-bar">
     <ion-chip [class.active]="currentStatus() === 'RECEIVED'" (click)="currentStatus.set('RECEIVED'); loadIdeas()">RECEIVED</ion-chip>
     <ion-chip [class.active]="currentStatus() === 'REVIEWED'" (click)="currentStatus.set('REVIEWED'); loadIdeas()">REVIEWED</ion-chip>
