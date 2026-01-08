@@ -1,20 +1,63 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="hero-container">
+    <!-- Fondo Animado Sutil -->
+    <div class="noise-overlay"></div>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <header class="nasa-header">
+      <div class="logo">ONLYTIPS</div>
+      <div class="admin-link" (click)="goToAdmin()">ADMIN</div>
+      <div class="fund-counter">
+        <span class="label">OnlyTips Fund:</span>
+        <span class="value">{{ status()?.fundTotal | currency:'USD' }}</span>
+      </div>
+    </header>
+
+    <!-- Professional Slider -->
+    <swiper-container
+      autoplay="true"
+      loop="true"
+      speed="1000"
+      autoplay-delay="3000"
+      style="height: calc(100vh - 20px); width: 100%;"
+    >
+      <swiper-slide style="background-image: url('/assets/slider-only-tips1.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5; height: 100vh; width: 100%;">
+      </swiper-slide>
+      <swiper-slide style="background-image: url('/assets/slider-only-tips2.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5; height: 100vh; width: 100%;">
+      </swiper-slide>
+      <swiper-slide style="background-image: url('/assets/slider-onlytips3.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5; height: 100vh; width: 100%;">
+      </swiper-slide>
+      <swiper-slide style="background-image: url('/assets/slider-only-tips4.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5; height: 100vh; width: 100%;">
+      </swiper-slide>
+    </swiper-container>
+
+
+    <main class="content-center">
+      <h1 class="main-title">Your idea deserves<br><span class="accent">a decision.</span></h1>
+      <p class="subtitle">Human validation. No algorithms. Real impact.</p>
+
+      <ion-button class="btn-tesla" (click)="openSubmitModal()">
+        Submit your idea — {{ status()?.submissionFee | currency:'USD' }}
+      </ion-button>
+    </main>
+
+    <!-- Explanation Section -->
+    <section class="explanation-section">
+      <h2 class="explanation-title">What is OnlyTips?</h2>
+      <p class="explanation-text">OnlyTips is a revolutionary platform where innovators submit their groundbreaking ideas for human validation. Unlike algorithmic systems, our expert reviewers provide real, thoughtful decisions on funding and selection. Your idea deserves a decision – submit it today and join the future of innovation.</p>
+    </section>
+
+    <!-- Bloque de Decisiones Recientes (Noosfera) -->
+    <section class="decisions-track">
+      <div class="track-header">RECENT DECISIONS</div>
+      <div class="track-list">
+        @for (item of status()?.recentDecisions; track item._id) {
+          <div class="decision-card glass">
+            <div class="card-status" [class]="item.status.toLowerCase()">{{ item.status }}</div>
+            <div class="card-title">{{ item.title }}</div>
+            <div class="card-footer">{{ item.masked_owner }} • {{ item.decision_date | date:'shortDate' }}</div>
+          </div>
+        }
+      </div>
+    </section>
   </div>
 </ion-content>

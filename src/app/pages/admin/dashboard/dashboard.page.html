@@ -1,0 +1,32 @@
+<ion-header>
+  <div class="admin-header">
+    <div class="title">MISSION CONTROL</div>
+    <div class="logout" (click)="logout()">LOGOUT</div>
+  </div>
+</ion-header>
+
+<ion-content>
+  <div class="filter-bar">
+    <ion-chip [class.active]="currentStatus() === 'RECEIVED'" (click)="currentStatus.set('RECEIVED'); loadIdeas()">RECEIVED</ion-chip>
+    <ion-chip [class.active]="currentStatus() === 'REVIEWED'" (click)="currentStatus.set('REVIEWED'); loadIdeas()">REVIEWED</ion-chip>
+    <ion-chip [class.active]="currentStatus() === 'SELECTED'" (click)="currentStatus.set('SELECTED'); loadIdeas()">SELECTED</ion-chip>
+    <ion-chip [class.active]="currentStatus() === 'NOT_SELECTED'" (click)="currentStatus.set('NOT_SELECTED'); loadIdeas()">NOT SELECTED</ion-chip>
+  </div>
+
+  <div class="idea-grid">
+    <div class="idea-item" *ngFor="let idea of ideas()" (click)="openDecisionMenu(idea)">
+      <div class="info">
+        <h3>{{ idea.title }}</h3>
+        <p>{{ idea.description }}</p>
+        <p>{{ idea.email }}</p>
+      </div>
+      <div class="status">{{ idea.status }}</div>
+    </div>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="btn-fund" (click)="updateFund()">
+      <ion-icon name="cash-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

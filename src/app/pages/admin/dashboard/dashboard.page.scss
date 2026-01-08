@@ -1,0 +1,39 @@
+.admin-header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--tesla-border);
+
+  .title { letter-spacing: 4px; font-weight: 800; font-size: 0.8rem; }
+}
+
+.filter-bar {
+  display: flex; gap: 10px; padding: 20px;
+  ion-chip {
+    --background: #111; --color: #666; border-radius: 4px;
+    &.active { --background: var(--tesla-accent); --color: #000; font-weight: bold; }
+  }
+}
+
+.idea-grid {
+  padding: 0 20px;
+  .idea-item {
+    background: var(--tesla-glass);
+    border: 1px solid var(--tesla-border);
+    margin-bottom: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .info {
+      h3 { margin: 0; font-size: 1rem; color: #fff; }
+      p { margin: 5px 0 0; font-size: 0.7rem; color: #666; }
+    }
+  }
+}
+
+.btn-fund {
+  --background: #fff; --color: #000; font-weight: bold;
+}
