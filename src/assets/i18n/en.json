@@ -8,5 +8,32 @@
     "explanationTitle": "What is OnlyTips?",
     "explanationText": "OnlyTips is a revolutionary platform where innovators submit their groundbreaking ideas for human validation. Unlike algorithmic systems, our expert reviewers provide real, thoughtful decisions on funding and selection. Your idea deserves a decision – submit it today and join the future of innovation.",
     "recentDecisions": "RECENT DECISIONS"
+  },
+  "submitIdea": {
+    "title": "INITIATE SUBMISSION",
+    "cancel": "CANCEL",
+    "projectTitle": "PROJECT TITLE",
+    "projectTitlePlaceholder": "Define your vision...",
+    "description": "DESCRIPTION (Human readable)",
+    "descriptionPlaceholder": "Details of the innovation...",
+    "contactEmail": "CONTACT EMAIL",
+    "emailPlaceholder": "communications@domain.com",
+    "isPublic": "Publicly visible in Noosphere",
+    "payWithStripe": "PAY WITH STRIPE",
+    "payWithPaypal": "PAY WITH PAYPAL",
+    "payWithApplePay": "PAY WITH APPLE PAY",
+    "loadingMessage": "ESTABLISHING SECURE CONNECTION...",
+    "errorMessage": "TELEMETRY ERROR: Submission failed."
+  },
+  "paymentSuccess": {
+    "title": "PAYMENT CONFIRMED",
+    "subtitle": "Your payment has been processed successfully and your idea has been registered",
+    "emailNotificationTitle": "EMAIL NOTIFICATION",
+    "emailNotificationText": "You will receive a confirmation email shortly. All future communications regarding your submission will be sent to your registered email address.",
+    "reviewProcessTitle": "REVIEW PROCESS",
+    "reviewProcessText": "Our team will carefully review your submission. You will be notified via email if your idea is selected for investment or requires additional information.",
+    "nextStepsTitle": "NEXT STEPS",
+    "nextStepsText": "Keep an eye on your inbox. We typically respond within 5-7 business days. Selected ideas will receive detailed information about the investment process.",
+    "returnToHome": "RETURN TO HOME"
   }
 }

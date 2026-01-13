@@ -42,4 +42,16 @@ export class ApiService {
       headers: this.getHeaders()
     });
   }
+
+  getAdminStatistics(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/admin/statistics`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  updateFund(amount: number): Observable<any> {
+    return this.http.put(`${this.baseUrl}/admin/settings/fund`, { amount }, {
+      headers: this.getHeaders()
+    });
+  }
 }

@@ -7,6 +7,10 @@ export const routes: Routes = [
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
   },
   {
+    path: 'payment/success',
+    loadComponent: () => import('./pages/payment-success/payment-success.page').then((m) => m.PaymentSuccessPage),
+  },
+  {
     path: 'admin/login',
     loadComponent: () => import('./pages/admin/login/login.page').then((m) => m.LoginPage),
   },

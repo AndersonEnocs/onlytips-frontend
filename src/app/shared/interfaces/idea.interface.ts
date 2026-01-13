@@ -6,6 +6,12 @@ export enum IdeaStatus {
   NOT_SELECTED = 'NOT_SELECTED'
 }
 
+export enum PaymentMethod {
+  STRIPE = 'STRIPE',
+  PAYPAL = 'PAYPAL',
+  APPLE_PAY = 'APPLE_PAY'
+}
+
 export interface IIdea {
   id: string;
   title: string;

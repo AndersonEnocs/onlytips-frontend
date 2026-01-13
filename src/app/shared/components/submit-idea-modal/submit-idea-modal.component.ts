@@ -3,47 +3,62 @@ import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController, LoadingController, ToastController } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from '../../../core/services/api.service';
+import { PaymentMethod } from '../../../shared/interfaces/idea.interface';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-submit-idea-modal',
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, TranslateModule],
   template: `
     <ion-header class="ion-no-border">
       <ion-toolbar>
-        <ion-title>INITIATE SUBMISSION</ion-title>
+        <ion-title>{{ 'submitIdea.title' | translate }}</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="dismiss()" class="close-btn">CANCEL</ion-button>
+          <ion-button (click)="dismiss()" class="close-btn">{{ 'submitIdea.cancel' | translate }}</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
     <ion-content class="ion-padding">
       <div class="form-container">
-        <form [formGroup]="ideaForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="ideaForm">
 
           <div class="input-group">
-            <label>PROJECT TITLE</label>
-            <input formControlName="title" placeholder="Define your vision..." type="text">
+            <label>{{ 'submitIdea.projectTitle' | translate }}</label>
+            <input formControlName="title" [placeholder]="'submitIdea.projectTitlePlaceholder' | translate" type="text">
           </div>
 
           <div class="input-group">
-            <label>DESCRIPTION (Human readable)</label>
-            <textarea formControlName="description" rows="6" placeholder="Details of the innovation..."></textarea>
+            <label>{{ 'submitIdea.description' | translate }}</label>
+            <textarea formControlName="description" rows="6" [placeholder]="'submitIdea.descriptionPlaceholder' | translate"></textarea>
           </div>
 
           <div class="input-group">
-            <label>CONTACT EMAIL</label>
-            <input formControlName="email" type="email" placeholder="communications@domain.com">
+            <label>{{ 'submitIdea.contactEmail' | translate }}</label>
+            <input formControlName="email" type="email" [placeholder]="'submitIdea.emailPlaceholder' | translate">
           </div>
 
           <div class="checkbox-group">
-            <ion-checkbox formControlName="isPublic" justify="start">Publicly visible in Noosphere</ion-checkbox>
+            <ion-checkbox formControlName="isPublic" justify="start">{{ 'submitIdea.isPublic' | translate }}</ion-checkbox>
           </div>
 
-          <button type="submit" [disabled]="!ideaForm.valid" class="btn-tesla-submit">
-            RESERVE SLOT — $4.99
-          </button>
+          <div class="payment-buttons">
+            <button type="button" [disabled]="!ideaForm.valid" (click)="onSubmit(PaymentMethod.STRIPE)" class="btn-tesla-stripe">
+              <span class="btn-icon">💳</span>
+              {{ 'submitIdea.payWithStripe' | translate }}
+            </button>
+            
+            <button type="button" [disabled]="!ideaForm.valid" (click)="onSubmit(PaymentMethod.PAYPAL)" class="btn-tesla-paypal">
+              <span class="btn-icon">💳</span>
+              {{ 'submitIdea.payWithPaypal' | translate }}
+            </button>
+            
+            <button type="button" [disabled]="!ideaForm.valid" (click)="onSubmit(PaymentMethod.APPLE_PAY)" class="btn-tesla-apple">
+              <span class="btn-icon">🍎</span>
+              {{ 'submitIdea.payWithApplePay' | translate }}
+            </button>
+          </div>
         </form>
       </div>
     </ion-content>
@@ -86,18 +101,62 @@ import { ApiService } from '../../../core/services/api.service';
         &:focus { border-color: var(--tesla-accent); }
       }
     }
-    .btn-tesla-submit {
+    .payment-buttons {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .btn-tesla-stripe,
+    .btn-tesla-paypal,
+    .btn-tesla-apple {
       width: 100%;
-      background: var(--tesla-accent);
-      color: #000;
       border: none;
       padding: 18px;
       font-weight: 800;
       letter-spacing: 3px;
       cursor: pointer;
-      margin-top: 20px;
-      transition: opacity 0.3s;
-      &:disabled { opacity: 0.2; cursor: not-allowed; }
+      transition: all 0.3s ease;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      &:disabled { 
+        opacity: 0.2; 
+        cursor: not-allowed; 
+      }
+      &:not(:disabled):hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      }
+      &:not(:disabled):active {
+        transform: translateY(0);
+      }
+    }
+    
+    .btn-tesla-stripe {
+      background: linear-gradient(135deg, #635bff 0%, #0a2540 100%);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .btn-tesla-paypal {
+      background: linear-gradient(135deg, #0070ba 0%, #003087 100%);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .btn-tesla-apple {
+      background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .btn-icon {
+      font-size: 1.2rem;
+      line-height: 1;
     }
     ion-checkbox {
       --size: 18px;
@@ -114,6 +173,9 @@ export class SubmitIdeaModalComponent {
   private modalCtrl = inject(ModalController);
   private loadingCtrl = inject(LoadingController);
   private toastCtrl = inject(ToastController);
+  private translate = inject(TranslateService);
+  
+  PaymentMethod = PaymentMethod;
 
   public ideaForm = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
@@ -122,29 +184,36 @@ export class SubmitIdeaModalComponent {
     isPublic: [true]
   });
 
-  async onSubmit() {
+  async onSubmit(paymentMethod: PaymentMethod) {
     if (this.ideaForm.invalid) return;
 
+    const loadingMessage = this.translate.instant('submitIdea.loadingMessage');
     const loader = await this.loadingCtrl.create({
-      message: 'ESTABLISHING SECURE CONNECTION...',
+      message: loadingMessage,
       spinner: 'lines-sharp',
       cssClass: 'tesla-loader'
     });
     await loader.present();
 
-    this.api.submitIdea(this.ideaForm.value).subscribe({
+    const formData = {
+      ...this.ideaForm.value,
+      paymentMethod: paymentMethod
+    };
+
+    this.api.submitIdea(formData).subscribe({
       next: (res) => {
         loader.dismiss();
         this.dismiss();
-        // Redirección profesional a Stripe Checkout
-        if (res.data.checkoutUrl) {
+        // Redirección profesional al método de pago seleccionado
+        if (res.data?.checkoutUrl) {
           window.location.href = res.data.checkoutUrl;
         }
       },
       error: async (err) => {
         loader.dismiss();
+        const errorMessage = this.translate.instant('submitIdea.errorMessage');
         const toast = await this.toastCtrl.create({
-          message: 'TELEMETRY ERROR: Submission failed.',
+          message: errorMessage,
           duration: 3000,
           color: 'danger',
           position: 'bottom'

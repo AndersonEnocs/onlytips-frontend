@@ -8,5 +8,32 @@
     "explanationTitle": "¿Qué es OnlyTips?",
     "explanationText": "OnlyTips es una plataforma revolucionaria donde los innovadores envían sus ideas innovadoras para validación humana. A diferencia de los sistemas algorítmicos, nuestros revisores expertos proporcionan decisiones reales y reflexivas sobre financiación y selección. Tu idea merece una decisión – envíala hoy y únete al futuro de la innovación.",
     "recentDecisions": "DECISIONES RECIENTES"
+  },
+  "submitIdea": {
+    "title": "INICIAR ENVÍO",
+    "cancel": "CANCELAR",
+    "projectTitle": "TÍTULO DEL PROYECTO",
+    "projectTitlePlaceholder": "Define tu visión...",
+    "description": "DESCRIPCIÓN (Legible por humanos)",
+    "descriptionPlaceholder": "Detalles de la innovación...",
+    "contactEmail": "CORREO DE CONTACTO",
+    "emailPlaceholder": "comunicaciones@dominio.com",
+    "isPublic": "Visible públicamente en Noosfera",
+    "payWithStripe": "PAGAR CON STRIPE",
+    "payWithPaypal": "PAGAR CON PAYPAL",
+    "payWithApplePay": "PAGAR CON APPLE PAY",
+    "loadingMessage": "ESTABLECIENDO CONEXIÓN SEGURA...",
+    "errorMessage": "ERROR DE TELEMETRÍA: El envío falló."
+  },
+  "paymentSuccess": {
+    "title": "PAGO CONFIRMADO",
+    "subtitle": "Tu pago ha sido procesado exitosamente y tu idea ha sido registrada",
+    "emailNotificationTitle": "NOTIFICACIÓN POR CORREO",
+    "emailNotificationText": "Recibirás un correo de confirmación en breve. Todas las comunicaciones futuras sobre tu envío serán enviadas a tu dirección de correo registrada.",
+    "reviewProcessTitle": "PROCESO DE REVISIÓN",
+    "reviewProcessText": "Nuestro equipo revisará cuidadosamente tu envío. Serás notificado por correo si tu idea es seleccionada para inversión o requiere información adicional.",
+    "nextStepsTitle": "PRÓXIMOS PASOS",
+    "nextStepsText": "Mantén un ojo en tu bandeja de entrada. Típicamente respondemos en 5-7 días hábiles. Las ideas seleccionadas recibirán información detallada sobre el proceso de inversión.",
+    "returnToHome": "VOLVER AL INICIO"
   }
 }

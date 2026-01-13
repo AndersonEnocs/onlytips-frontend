@@ -13,6 +13,10 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   padding: 20px;
+  
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 
   .metric-card {
     background: var(--tesla-glass);
@@ -64,10 +68,21 @@
 
     &.fund-card {
       grid-column: span 2;
+      
+      @media (min-width: 1200px) {
+        grid-column: span 1;
+      }
 
       .metric-icon {
         background: linear-gradient(135deg, #ffd700, #ff8c00);
       }
+    }
+    
+    // Indicador de carga
+    .metric-content h2 {
+      min-height: 2.5rem;
+      display: flex;
+      align-items: center;
     }
   }
 }
@@ -100,4 +115,83 @@
 
 .btn-fund {
   --background: #fff; --color: #000; font-weight: bold;
+}
+
+.pagination-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  border-top: 1px solid var(--tesla-border);
+  margin-top: 20px;
+
+  .pagination-info {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 1px;
+
+    .total-items {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.75rem;
+    }
+  }
+
+  .pagination-buttons {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+    justify-content: center;
+
+    .btn-pagination {
+      flex: 1;
+      --background: var(--tesla-glass);
+      --color: #fff;
+      --border-radius: 8px;
+      --border-color: var(--tesla-border);
+      --border-width: 1px;
+      --border-style: solid;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      &:not([disabled]):hover {
+        --background: var(--tesla-accent);
+        --color: #000;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+      }
+
+      &[disabled] {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+
+      ion-icon {
+        font-size: 18px;
+      }
+    }
+
+    .btn-prev {
+      ion-icon {
+        margin-right: 0;
+      }
+    }
+
+    .btn-next {
+      ion-icon {
+        margin-left: 0;
+      }
+    }
+  }
 }
