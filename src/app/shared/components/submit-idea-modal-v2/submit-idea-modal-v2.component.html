@@ -1,0 +1,167 @@
+<ion-header class="modal-header">
+  <ion-toolbar>
+    <div class="header-content">
+      <div class="header-icon">
+        <ion-icon name="bulb-outline"></ion-icon>
+      </div>
+      <div class="header-text">
+        <h1 class="modal-title">{{ 'submitIdea.title' | translate }}</h1>
+        <p class="modal-subtitle">Comparte tu idea innovadora</p>
+      </div>
+    </div>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" [disabled]="isSubmitting()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="modal-content">
+  <div class="content-wrapper">
+    
+    <!-- Loading State -->
+    <div *ngIf="isSubmitting()" class="progress-wrapper">
+      <ion-progress-bar type="indeterminate" color="primary"></ion-progress-bar>
+      <p>{{ 'submitIdea.processing' | translate }}</p>
+    </div>
+
+    <!-- Error Summary -->
+    <ion-card *ngIf="formErrors().length > 0" class="error-card">
+      <ion-card-content>
+        <div *ngFor="let error of formErrors()" class="error-line">
+          <ion-icon name="alert-circle-outline"></ion-icon> {{ error | translate }}
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- FORMULARIO -->
+    <form *ngIf="ideaForm" [formGroup]="ideaForm">
+      
+      <ion-list lines="none" class="form-list">
+        
+        <!-- Título -->
+        <ion-item class="form-item" [class.ion-invalid]="isFieldInvalid('title')">
+          <ion-input
+            label="{{ 'submitIdea.projectTitle' | translate }}"
+            labelPlacement="floating"
+            formControlName="title"
+            type="text"
+            [counter]="true"
+            maxlength="100"
+            [disabled]="isSubmitting()">
+          </ion-input>
+          <ion-note slot="error" *ngIf="isFieldInvalid('title')">
+            {{ getFieldError('title') | translate }}
+          </ion-note>
+        </ion-item>
+
+        <!-- Descripción -->
+        <ion-item class="form-item textarea-item" [class.ion-invalid]="isFieldInvalid('description')">
+          <ion-textarea
+            label="{{ 'submitIdea.description' | translate }}"
+            labelPlacement="floating"
+            formControlName="description"
+            [counter]="true"
+            maxlength="2000"
+            rows="5"
+            [autoGrow]="true"
+            [disabled]="isSubmitting()">
+          </ion-textarea>
+          <ion-note slot="error" *ngIf="isFieldInvalid('description')">
+            {{ getFieldError('description') | translate }}
+          </ion-note>
+        </ion-item>
+
+        <!-- Email -->
+        <ion-item class="form-item" [class.ion-invalid]="isFieldInvalid('email')">
+          <ion-input
+            label="{{ 'submitIdea.contactEmail' | translate }}"
+            labelPlacement="floating"
+            formControlName="email"
+            type="email"
+            inputmode="email"
+            [disabled]="isSubmitting()">
+          </ion-input>
+          <ion-note slot="error" *ngIf="isFieldInvalid('email')">
+            {{ getFieldError('email') | translate }}
+          </ion-note>
+        </ion-item>
+
+      </ion-list>
+
+      <!-- SECCIÓN DE PAGO -->
+      <div class="payment-section">
+        <p class="section-label">MÉTODO DE PAGO</p>
+
+        <div class="payment-grid">
+          
+          <!-- Stripe -->
+          <div class="payment-card stripe-card"
+               [class.active]="ideaForm.valid && !isSubmitting()"
+               [class.processing]="isSubmitting() && selectedPaymentMethod() === PAYMENT_METHODS.STRIPE"
+               (click)="onSubmit(PAYMENT_METHODS.STRIPE)">
+            
+            <div class="card-icon">
+              <ion-icon name="card-outline"></ion-icon>
+            </div>
+            <div class="card-info">
+              <h4>Pago con Stripe</h4>
+              <p>Crédito o Débito</p>
+            </div>
+            <div class="card-price">
+              $9.99
+              <ion-spinner *ngIf="isSubmitting() && selectedPaymentMethod() === PAYMENT_METHODS.STRIPE" name="crescent"></ion-spinner>
+            </div>
+          </div>
+
+          <!-- PayPal -->
+          <div class="payment-card paypal-card"
+               [class.active]="ideaForm.valid && !isSubmitting()"
+               [class.processing]="isSubmitting() && selectedPaymentMethod() === PAYMENT_METHODS.PAYPAL"
+               (click)="onSubmit(PAYMENT_METHODS.PAYPAL)">
+            
+            <div class="card-icon">
+              <ion-icon name="logo-paypal"></ion-icon>
+            </div>
+            <div class="card-info">
+              <h4>PayPal</h4>
+              <p>Pago seguro</p>
+            </div>
+            <div class="card-price">
+              $9.99
+              <ion-spinner *ngIf="isSubmitting() && selectedPaymentMethod() === PAYMENT_METHODS.PAYPAL" name="crescent"></ion-spinner>
+            </div>
+          </div>
+
+          <!-- Apple Pay -->
+          <div class="payment-card apple-pay-card"
+               [class.active]="ideaForm.valid && !isSubmitting()"
+               [class.processing]="isSubmitting() && selectedPaymentMethod() === PAYMENT_METHODS.APPLE_PAY"
+               (click)="onSubmit(PAYMENT_METHODS.APPLE_PAY)">
+            
+            <div class="card-icon">
+              <ion-icon name="logo-apple"></ion-icon>
+            </div>
+            <div class="card-info">
+              <h4>Apple Pay</h4>
+              <p>Rápido y simple</p>
+            </div>
+            <div class="card-price">
+              $9.99
+              <ion-spinner *ngIf="isSubmitting() && selectedPaymentMethod() === PAYMENT_METHODS.APPLE_PAY" name="crescent"></ion-spinner>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </form>
+  </div>
+</ion-content>
+
+<div class="modal-footer">
+  <ion-button expand="block" fill="outline" color="medium" (click)="dismiss()" [disabled]="isSubmitting()">
+    Cancelar
+  </ion-button>
+</div>

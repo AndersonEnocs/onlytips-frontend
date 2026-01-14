@@ -7,6 +7,9 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader, TRANSLATE_HTTP_LOADER_CONFIG } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 
+// Import and initialize Ionic icons
+import './icons';
+
 import { routes } from './app.routes';
 
 // Factory function for TranslateHttpLoader

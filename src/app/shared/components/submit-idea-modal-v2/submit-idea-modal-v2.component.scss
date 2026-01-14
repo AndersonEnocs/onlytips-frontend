@@ -1,0 +1,238 @@
+// Variables globales forzadas
+:host {
+  display: block;
+  height: 100%;
+  --background-modal: #000000;
+  --background-input: #1a1a1a;
+  --text-color: #ffffff;
+  --text-muted: #888888;
+  --accent: #007aff;
+  --error: #ff4961;
+}
+
+// Estructura General
+ion-content {
+  --background: var(--background-modal);
+  --color: var(--text-color);
+}
+
+.modal-header {
+  background: var(--background-modal);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  
+  ion-toolbar {
+    --background: transparent;
+    --border-width: 0;
+  }
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  .header-icon {
+    color: var(--accent);
+    font-size: 24px;
+    background: rgba(0, 122, 255, 0.1);
+    padding: 8px;
+    border-radius: 50%;
+  }
+
+  .modal-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  
+  .modal-subtitle {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+}
+
+.content-wrapper {
+  padding: 20px;
+}
+
+// ==========================================
+// FIX PARA LOS INPUTS (IMPORTANTE)
+// ==========================================
+
+ion-list.form-list {
+  background: transparent !important;
+  padding: 0;
+  margin: 0;
+}
+
+/* Forzamos estilos al ion-item para que se vea */
+ion-item.form-item {
+  --background: #1a1a1a !important; /* Fondo gris oscuro explícito */
+  --color: #ffffff !important;
+  --border-color: transparent;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --border-radius: 8px;
+  --min-height: 60px; /* Altura mínima obligatoria */
+  margin-bottom: 16px;
+  display: flex; /* Asegura display */
+  
+  /* Estados */
+  &.ion-focused {
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  &.ion-invalid.ion-touched {
+    box-shadow: 0 0 0 1px var(--error);
+  }
+}
+
+/* Forzamos estilos a los inputs internos */
+ion-input, ion-textarea {
+  --color: #ffffff !important;
+  --placeholder-color: #666666 !important;
+  --placeholder-opacity: 1 !important;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+}
+
+/* Penetración Shadow DOM para Safari/Producción */
+ion-input::part(native),
+ion-textarea::part(native) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Labels flotantes visibles */
+ion-input::part(label),
+ion-textarea::part(label) {
+  color: #a1a1a6 !important;
+  transform: translateY(10%) scale(1);
+  margin-bottom: 5px;
+}
+
+.textarea-item {
+  --min-height: 120px;
+  align-items: flex-start;
+}
+
+ion-note {
+  font-size: 12px;
+  color: var(--error);
+  margin-top: 5px;
+}
+
+// ==========================================
+// ESTILOS DE PAGO (CORREGIDOS)
+// ==========================================
+
+.payment-section {
+  margin-top: 30px;
+}
+
+.section-label {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.payment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Grid responsivo */
+  gap: 15px;
+}
+
+.payment-card {
+  background: #121212;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+
+  // Icono
+  .card-icon {
+    font-size: 24px;
+    color: white;
+    background: rgba(255,255,255,0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  // Texto
+  .card-info {
+    flex: 1;
+    h4 { margin: 0; font-size: 14px; color: white; font-weight: 600; }
+    p { margin: 2px 0 0; font-size: 11px; color: #888; }
+  }
+
+  // Precio
+  .card-price {
+    font-weight: 700;
+    color: white;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  // Estados
+  &.active:hover {
+    border-color: var(--accent);
+    background: rgba(0, 122, 255, 0.05);
+  }
+
+  &:not(.active) {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &.processing {
+    border-color: var(--accent);
+  }
+}
+
+// Colores sutiles para identificar tarjetas
+.stripe-card .card-icon { color: #667eea; background: rgba(102, 126, 234, 0.15); }
+.paypal-card .card-icon { color: #0070ba; background: rgba(0, 112, 186, 0.15); }
+.apple-pay-card .card-icon { color: white; background: rgba(255, 255, 255, 0.15); }
+
+// Footer y Loading
+.progress-wrapper {
+  margin-bottom: 20px;
+  text-align: center;
+  p { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+}
+
+.error-card {
+  margin: 0 0 20px 0;
+  --background: rgba(255, 73, 97, 0.1);
+  .error-line {
+    color: var(--error);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 4px;
+  }
+}
+
+.modal-footer {
+  padding: 16px;
+  background: var(--background-modal);
+  border-top: 1px solid rgba(255,255,255,0.1);
+}

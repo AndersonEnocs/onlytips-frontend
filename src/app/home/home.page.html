@@ -1,16 +1,18 @@
-<ion-content [fullscreen]="true">
-  <div class="hero-container">
+<ion-content [scrollY]="true" [fullscreen]="true">
+  <!-- Header -->
+  <header class="nasa-header">
+    <div class="logo">ONLYTIPS</div>
+    <div class="admin-link" (click)="goToAdmin()">{{ 'home.admin' | translate }}</div>
+    <div class="fund-counter">
+      <span class="label">{{ 'home.fundLabel' | translate }}</span>
+      <span class="value">{{ status()?.fundTotal | currency:'USD' }}</span>
+    </div>
+  </header>
+
+  <!-- Hero Section with Slider -->
+  <div class="hero-section">
     <!-- Fondo Animado Sutil -->
     <div class="noise-overlay"></div>
-
-    <header class="nasa-header">
-      <div class="logo">ONLYTIPS</div>
-      <div class="admin-link" (click)="goToAdmin()">{{ 'home.admin' | translate }}</div>
-      <div class="fund-counter">
-        <span class="label">{{ 'home.fundLabel' | translate }}</span>
-        <span class="value">{{ status()?.fundTotal | currency:'USD' }}</span>
-      </div>
-    </header>
 
     <!-- Professional Slider -->
     <swiper-container
@@ -18,18 +20,16 @@
       loop="true"
       speed="1000"
       autoplay-delay="3000"
-      style="height: calc(100vh - 20px); width: 100%;"
     >
-      <swiper-slide style="background-image: url('/assets/slider-only-tips1.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5; height: 100vh; width: 100%;">
+      <swiper-slide style="background-image: url('/assets/slider-only-tips1.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5;">
       </swiper-slide>
-      <swiper-slide style="background-image: url('/assets/slider-only-tips2.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5; height: 100vh; width: 100%;">
+      <swiper-slide style="background-image: url('/assets/slider-only-tips2.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5;">
       </swiper-slide>
-      <swiper-slide style="background-image: url('/assets/slider-onlytips3.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5; height: 100vh; width: 100%;">
+      <swiper-slide style="background-image: url('/assets/slider-onlytips3.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5;">
       </swiper-slide>
-      <swiper-slide style="background-image: url('/assets/slider-only-tips4.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5; height: 100vh; width: 100%;">
+      <swiper-slide style="background-image: url('/assets/slider-only-tips4.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.5;">
       </swiper-slide>
     </swiper-container>
-
 
     <main class="content-center">
       <h1 class="main-title" [innerHTML]="'home.title' | translate"></h1>
@@ -39,25 +39,25 @@
         {{ 'home.submitButton' | translate:{fee: (status()?.submissionFee | currency:'USD')} }}
       </ion-button>
     </main>
-
-    <!-- Explanation Section -->
-    <section class="explanation-section">
-      <h2 class="explanation-title">{{ 'home.explanationTitle' | translate }}</h2>
-      <p class="explanation-text">{{ 'home.explanationText' | translate }}</p>
-    </section>
-
-    <!-- Bloque de Decisiones Recientes (Noosfera) -->
-    <section class="decisions-track">
-      <div class="track-header">{{ 'home.recentDecisions' | translate }}</div>
-      <div class="track-list">
-        @for (item of status()?.recentDecisions; track item._id) {
-          <div class="decision-card glass">
-            <div class="card-status" [class]="item.status.toLowerCase()">{{ item.status }}</div>
-            <div class="card-title">{{ item.title }}</div>
-            <div class="card-footer">{{ item.masked_owner }} • {{ item.decision_date | date:'shortDate' }}</div>
-          </div>
-        }
-      </div>
-    </section>
   </div>
+
+  <!-- Explanation Section -->
+  <section class="explanation-section">
+    <h2 class="explanation-title">{{ 'home.explanationTitle' | translate }}</h2>
+    <p class="explanation-text">{{ 'home.explanationText' | translate }}</p>
+  </section>
+
+  <!-- Bloque de Decisiones Recientes (Noosfera) -->
+  <section class="decisions-track">
+    <div class="track-header">{{ 'home.recentDecisions' | translate }}</div>
+    <div class="track-list">
+      @for (item of status()?.recentDecisions; track item._id) {
+        <div class="decision-card glass">
+          <div class="card-status" [class]="item.status.toLowerCase()">{{ item.status }}</div>
+          <div class="card-title">{{ item.title }}</div>
+          <div class="card-footer">{{ item.masked_owner }} • {{ item.decision_date | date:'shortDate' }}</div>
+        </div>
+      }
+    </div>
+  </section>
 </ion-content>

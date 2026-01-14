@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:3333';
+  private readonly baseUrl = environment.apiUrl;
 
   // Protocolo de Seguridad para Admin
   private getHeaders() {

@@ -112,12 +112,6 @@ import { TranslateModule } from '@ngx-translate/core';
       animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
     }
 
-    @keyframes stroke {
-      100% {
-        stroke-dashoffset: 0;
-      }
-    }
-
     @keyframes scale {
       0%, 100% {
         transform: none;
@@ -133,33 +127,11 @@ import { TranslateModule } from '@ngx-translate/core';
       }
     }
 
-    @keyframes fadeInScale {
-      from {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
     .success-content-wrapper {
       max-width: 600px;
       width: 100%;
       text-align: center;
       animation: fadeInUp 0.8s ease-out 0.3s both;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .success-title {

@@ -1,4 +1,15 @@
-.hero-container {
+.nasa-header {
+  position: fixed;
+  top: 20px;
+  width: calc(100% - 40px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  padding: 0 20px;
+}
+
+.hero-section {
   position: relative;
   min-height: 100vh;
   display: flex;
@@ -18,16 +29,6 @@
   height: 100%;
   background: rgba(255, 255, 255, 0.02);
   z-index: 0;
-}
-
-.nasa-header {
-  position: absolute;
-  top: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 2;
 }
 
 .admin-link {
@@ -52,9 +53,11 @@
 
 .content-center {
   text-align: center;
-  z-index: 1;
+  position: relative;
+  z-index: 10;
   margin-bottom: 60px;
   margin-top: 25vh;
+  pointer-events: auto;
 }
 
 .main-title {
@@ -97,10 +100,11 @@
 .decision-card {
   min-width: 250px;
   padding: 20px;
-  background: var(--tesla-glass);
-  border: 1px solid var(--tesla-border);
+  background: var(--neo-bg-solid);
+  box-shadow: var(--neo-shadow-outset);
+  border: none;
   border-radius: 8px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: none;
 }
 
 .card-status {
@@ -210,33 +214,29 @@
   }
 }
 
-.btn-tesla {
-  background: var(--neo-bg-solid);
-  box-shadow: var(--neo-shadow-outset);
-  border: none;
-  &:hover {
-    box-shadow: var(--neo-shadow-inset);
-  }
+/* Asegurar que el botón sea clickeable */
+.content-center ion-button {
+  position: relative;
+  z-index: 11;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
-.decision-card {
-  background: var(--neo-bg-solid);
-  box-shadow: var(--neo-shadow-outset);
-  border: none;
-  backdrop-filter: none;
-}
 
 swiper-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
-  z-index: 0;
+  height: 100%;
+  z-index: 1;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .content-center {
   position: relative;
-  z-index: 1;
+  z-index: 10;
+  margin-top: 0;
+  pointer-events: auto;
 }

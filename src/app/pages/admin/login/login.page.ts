@@ -11,6 +11,12 @@ import { ApiService } from '../../../core/services/api.service';
   template: `
     <ion-content [fullscreen]="true">
       <div class="login-wrapper">
+        <div class="back-button-container">
+          <ion-button fill="clear" class="btn-back" (click)="goBack()">
+            <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+            BACK
+          </ion-button>
+        </div>
         <div class="login-card glass">
           <div class="nasa-logo">ADMIN ACCESS</div>
           <p class="instruction">IDENTIFICATION REQUIRED</p>
@@ -24,22 +30,95 @@ import { ApiService } from '../../../core/services/api.service';
   `,
   styles: [`
     .login-wrapper {
-      height: 100vh; display: flex; align-items: center; justify-content: center;
+      height: 100vh; 
+      display: flex; 
+      flex-direction: column;
+      align-items: center; 
+      justify-content: center;
       background: radial-gradient(circle at center, #111 0%, #000 100%);
+      position: relative;
     }
+    
+    .back-button-container {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+    }
+    
+    .btn-back {
+      --color: var(--tesla-accent);
+      --background: transparent;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        --color: #fff;
+        transform: translateX(-5px);
+      }
+      
+      ion-icon {
+        font-size: 1.2rem;
+      }
+    }
+    
     .login-card {
-      padding: 40px; width: 100%; max-width: 350px; text-align: center;
+      padding: 40px; 
+      width: 100%; 
+      max-width: 350px; 
+      text-align: center;
       border: 1px solid var(--tesla-border);
     }
-    .nasa-logo { font-size: 1.2rem; letter-spacing: 5px; margin-bottom: 10px; font-weight: 800; }
-    .instruction { font-size: 0.6rem; letter-spacing: 2px; color: #666; margin-bottom: 30px; }
-    input {
-      width: 100%; background: #000; border: 1px solid #333; padding: 15px;
-      color: var(--tesla-accent); text-align: center; font-size: 1.2rem; margin-bottom: 20px;
-      outline: none; transition: border 0.5s;
-      &:focus { border-color: var(--tesla-accent); }
+    
+    .nasa-logo { 
+      font-size: 1.2rem; 
+      letter-spacing: 5px; 
+      margin-bottom: 10px; 
+      font-weight: 800; 
     }
-    .btn-tesla { width: 100%; padding: 15px; }
+    
+    .instruction { 
+      font-size: 0.6rem; 
+      letter-spacing: 2px; 
+      color: #666; 
+      margin-bottom: 30px; 
+    }
+    
+    input {
+      width: 100%; 
+      background: #000; 
+      border: 1px solid #333; 
+      padding: 15px;
+      color: var(--tesla-accent); 
+      text-align: center; 
+      font-size: 1.2rem; 
+      margin-bottom: 20px;
+      outline: none; 
+      transition: border 0.5s;
+      &:focus { 
+        border-color: var(--tesla-accent); 
+      }
+    }
+    
+    .btn-tesla { 
+      width: 100%; 
+      padding: 15px; 
+    }
+    
+    @media (max-width: 768px) {
+      .back-button-container {
+        top: 15px;
+        left: 15px;
+      }
+      
+      .btn-back {
+        font-size: 0.7rem;
+        padding: 8px 12px;
+      }
+    }
   `]
 })
 export class LoginPage {
@@ -59,5 +138,9 @@ export class LoginPage {
         t.present();
       }
     });
+  }
+
+  goBack() {
+    this.nav.navigateBack('/home');
   }
 }
