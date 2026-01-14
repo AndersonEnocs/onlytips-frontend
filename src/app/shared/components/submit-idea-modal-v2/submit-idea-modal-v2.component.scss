@@ -1,24 +1,39 @@
-// Variables globales forzadas
+// =================================================================
+// 1. CONFIGURACIÓN BASE
+// =================================================================
 :host {
   display: block;
   height: 100%;
-  --background-modal: #000000;
-  --background-input: #1a1a1a;
-  --text-color: #ffffff;
-  --text-muted: #888888;
-  --accent: #007aff;
-  --error: #ff4961;
+
+  // Paleta de Colores "Dark Premium"
+  --bg-app: #000000;
+  --bg-card: #121212;
+  --bg-input: rgba(255, 255, 255, 0.06); // Gris translúcido sutil
+  --bg-input-hover: rgba(255, 255, 255, 0.1);
+  
+  --text-white: #ffffff;
+  --text-placeholder: #666666;
+  --text-label: #8e8e93;
+  
+  --border-color: rgba(255, 255, 255, 0.12);
+  --accent-color: #007aff; // Azul iOS
+  --error-color: #ff453a;  // Rojo iOS Dark Mode
+  
+  --radius-input: 12px;
+  --radius-card: 16px;
 }
 
-// Estructura General
 ion-content {
-  --background: var(--background-modal);
-  --color: var(--text-color);
+  --background: var(--bg-app);
+  --color: var(--text-white);
 }
 
+// =================================================================
+// 2. HEADER
+// =================================================================
 .modal-header {
-  background: var(--background-modal);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  background: var(--bg-app);
+  border-bottom: 1px solid var(--border-color);
   
   ion-toolbar {
     --background: transparent;
@@ -30,209 +45,286 @@ ion-content {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding-left: 8px;
   
   .header-icon {
-    color: var(--accent);
-    font-size: 24px;
-    background: rgba(0, 122, 255, 0.1);
-    padding: 8px;
+    font-size: 22px;
+    color: var(--accent-color);
+    background: rgba(0, 122, 255, 0.12);
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .modal-title {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 700;
-  }
-  
-  .modal-subtitle {
-    margin: 0;
-    font-size: 0.8rem;
-    color: var(--text-muted);
+  .header-text {
+    .modal-title {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .modal-subtitle {
+      margin: 2px 0 0 0;
+      font-size: 0.75rem;
+      color: var(--text-label);
+    }
   }
 }
 
-.content-wrapper {
-  padding: 20px;
-}
+// =================================================================
+// 3. ESTILOS DE INPUTS (CLEAN BOX STYLE)
+// =================================================================
 
-// ==========================================
-// FIX PARA LOS INPUTS (IMPORTANTE)
-// ==========================================
-
-ion-list.form-list {
+// Contenedor de la lista (Reset)
+ion-list {
   background: transparent !important;
   padding: 0;
-  margin: 0;
+  margin: 20px 0;
 }
 
-/* Forzamos estilos al ion-item para que se vea */
+// EL ITEM (La caja del input)
 ion-item.form-item {
-  --background: #1a1a1a !important; /* Fondo gris oscuro explícito */
-  --color: #ffffff !important;
-  --border-color: transparent;
+  // 1. Fondo y Borde Base
+  --background: var(--bg-input) !important;
+  --border-radius: var(--radius-input);
+  --border-color: transparent; // Ocultamos borde nativo Ionic
+  
+  // 2. Eliminamos líneas nativas "feas" (Highlight y Border Bottom)
+  --border-width: 0;
+  --inner-border-width: 0;
+  --highlight-height: 0; 
+  --ripple-color: transparent; // Quitamos efecto ripple si molesta
+
+  // 3. Dimensiones y Espaciado
+  --min-height: 56px;
   --padding-start: 16px;
   --inner-padding-end: 16px;
-  --border-radius: 8px;
-  --min-height: 60px; /* Altura mínima obligatoria */
   margin-bottom: 16px;
-  display: flex; /* Asegura display */
   
-  /* Estados */
+  // 4. Borde Personalizado (Control total)
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease-in-out;
+  
+  // Asegura visibilidad en producción
+  display: flex;
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  // ESTADO: Hover
+  &:hover:not(.ion-focused) {
+    --background: var(--bg-input-hover) !important;
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  // ESTADO: Foco (Borde Azul brillante)
   &.ion-focused {
-    box-shadow: 0 0 0 2px var(--accent);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 1px var(--accent-color); // Efecto glow sutil
+    --background: rgba(0, 122, 255, 0.05) !important; // Tinte azul muy sutil
   }
 
+  // ESTADO: Error (Borde Rojo)
   &.ion-invalid.ion-touched {
-    box-shadow: 0 0 0 1px var(--error);
+    border-color: var(--error-color);
+    --highlight-color-invalid: transparent; // Asegurar que Ionic no ponga su línea roja
   }
 }
 
-/* Forzamos estilos a los inputs internos */
+// EL TEXTO DENTRO DEL INPUT
 ion-input, ion-textarea {
-  --color: #ffffff !important;
-  --placeholder-color: #666666 !important;
+  --color: var(--text-white) !important;
+  --placeholder-color: var(--text-placeholder) !important;
   --placeholder-opacity: 1 !important;
-  --padding-top: 10px;
-  --padding-bottom: 10px;
+  --padding-top: 18px;    // Espacio para label flotante
+  --padding-bottom: 6px; 
+  font-size: 1rem;
 }
 
-/* Penetración Shadow DOM para Safari/Producción */
+// Penetración Shadow DOM (Para que el texto sea blanco sí o sí)
 ion-input::part(native),
 ion-textarea::part(native) {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
+  color: var(--text-white) !important;
+  caret-color: var(--accent-color); // Cursor azul
 }
 
-/* Labels flotantes visibles */
+// EL LABEL FLOTANTE
 ion-input::part(label),
 ion-textarea::part(label) {
-  color: #a1a1a6 !important;
-  transform: translateY(10%) scale(1);
-  margin-bottom: 5px;
+  color: var(--text-label) !important;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+  transition: color 0.2s ease;
 }
 
+// Color del label cuando hay error
+ion-item.ion-invalid.ion-touched ion-input::part(label),
+ion-item.ion-invalid.ion-touched ion-textarea::part(label) {
+  color: var(--error-color) !important;
+}
+
+// Ajuste específico para Textarea
 .textarea-item {
   --min-height: 120px;
   align-items: flex-start;
+  padding-top: 8px;
 }
 
+// Mensaje de Error (Texto pequeño debajo)
 ion-note {
-  font-size: 12px;
-  color: var(--error);
-  margin-top: 5px;
+  font-size: 0.75rem;
+  color: var(--error-color);
+  margin-top: 4px;
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-// ==========================================
-// ESTILOS DE PAGO (CORREGIDOS)
-// ==========================================
-
+// =================================================================
+// 4. SECCIÓN DE PAGO (Tarjetas)
+// =================================================================
 .payment-section {
-  margin-top: 30px;
-}
-
-.section-label {
-  color: var(--text-muted);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 15px;
+  margin-top: 32px;
+  
+  .section-label {
+    color: var(--text-label);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
 }
 
 .payment-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Grid responsivo */
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
 }
 
 .payment-card {
-  background: #121212;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  padding: 15px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: 16px;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
 
-  // Icono
   .card-icon {
     font-size: 24px;
-    color: white;
-    background: rgba(255,255,255,0.1);
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
 
-  // Texto
   .card-info {
     flex: 1;
-    h4 { margin: 0; font-size: 14px; color: white; font-weight: 600; }
-    p { margin: 2px 0 0; font-size: 11px; color: #888; }
+    min-width: 0; // Evita desbordamiento de texto
+    
+    h4 { 
+      margin: 0; 
+      font-size: 0.9rem; 
+      color: var(--text-white); 
+      font-weight: 600; 
+    }
+    p { 
+      margin: 2px 0 0; 
+      font-size: 0.75rem; 
+      color: var(--text-label); 
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
-  // Precio
   .card-price {
     font-weight: 700;
-    color: white;
-    font-size: 14px;
+    color: var(--text-white);
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: flex-end;
+    min-width: 50px;
   }
 
-  // Estados
+  // ESTADOS TARJETA
   &.active:hover {
-    border-color: var(--accent);
-    background: rgba(0, 122, 255, 0.05);
+    border-color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
   }
 
   &:not(.active) {
     opacity: 0.5;
     pointer-events: none;
+    filter: grayscale(0.5);
   }
 
   &.processing {
-    border-color: var(--accent);
+    border-color: var(--accent-color);
+    background: rgba(0, 122, 255, 0.08);
   }
 }
 
-// Colores sutiles para identificar tarjetas
-.stripe-card .card-icon { color: #667eea; background: rgba(102, 126, 234, 0.15); }
-.paypal-card .card-icon { color: #0070ba; background: rgba(0, 112, 186, 0.15); }
-.apple-pay-card .card-icon { color: white; background: rgba(255, 255, 255, 0.15); }
+// Colores específicos de Iconos
+.stripe-card .card-icon { color: #fff; background: linear-gradient(135deg, #667eea, #764ba2); }
+.paypal-card .card-icon { color: #fff; background: linear-gradient(135deg, #0070ba, #1546a0); }
+.apple-pay-card .card-icon { color: #000; background: #fff; }
 
-// Footer y Loading
+// =================================================================
+// 5. EXTRAS (Loading, Footer)
+// =================================================================
 .progress-wrapper {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  background: var(--bg-card);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
   text-align: center;
-  p { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+  
+  p { 
+    font-size: 0.8rem; 
+    color: var(--text-label); 
+    margin-top: 8px; 
+    margin-bottom: 0;
+  }
 }
 
 .error-card {
-  margin: 0 0 20px 0;
-  --background: rgba(255, 73, 97, 0.1);
+  margin: 0 0 24px 0;
+  --background: rgba(255, 69, 58, 0.1);
+  border: 1px solid rgba(255, 69, 58, 0.3);
+  border-radius: 12px;
+  box-shadow: none;
+
   .error-line {
-    color: var(--error);
-    font-size: 12px;
+    color: var(--error-color);
+    font-size: 0.8rem;
     display: flex;
     align-items: center;
-    gap: 5px;
-    margin-bottom: 4px;
+    gap: 8px;
+    padding: 4px 0;
+    font-weight: 500;
   }
 }
 
 .modal-footer {
-  padding: 16px;
-  background: var(--background-modal);
-  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 16px 20px 30px; // Extra padding para Safe Area
+  background: var(--bg-app);
+  border-top: 1px solid var(--border-color);
 }
