@@ -76,6 +76,9 @@
         <h2>{{ fundTotal() | currency:'USD':'symbol':'1.0-0' }}</h2>
         <p>OnlyTips Fund</p>
       </div>
+      <button class="btn-update-fund" (click)="updateFund()" aria-label="Update fund">
+        <ion-icon name="create-outline"></ion-icon>
+      </button>
     </div>
   </div>
 
@@ -121,9 +124,4 @@
     </div>
   </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button class="btn-fund" (click)="updateFund()">
-      <ion-icon name="cash-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>

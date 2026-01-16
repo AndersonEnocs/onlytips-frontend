@@ -1,7 +1,3 @@
-// Ionic Icons Configuration
-// This file centralizes all Ionic icons used in the application
-// to ensure they are properly loaded and tree-shakable
-
 import { addIcons } from 'ionicons';
 import {
   // Modal and UI icons
@@ -25,7 +21,10 @@ import {
   timeOutline,
   hourglassOutline,
   closeCircleOutline,
-  cashOutline
+  cashOutline,
+
+  // Edit icons
+  createOutline
 } from 'ionicons/icons';
 
 // Register all icons used in the application
@@ -51,5 +50,8 @@ addIcons({
   timeOutline,
   hourglassOutline,
   closeCircleOutline,
-  cashOutline
+  cashOutline,
+
+  // Edit icons
+  createOutline
 });

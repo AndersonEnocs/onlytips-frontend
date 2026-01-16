@@ -9,12 +9,14 @@
   justify-content: space-between;
   align-items: center;
   z-index: 100;
-  /* Asegurar espacio mínimo para barra de estado: 24px Android + safe area */
-  padding-top: calc(8px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+  /* SOLUCIÓN PROFESIONAL: Android necesita 48px mínimo para barra de estado */
+  /* Usar max() para tomar el mayor entre: 48px (Android), safe-area dinámico, o 20px (desktop) */
+  padding-top: calc(12px + max(48px, env(safe-area-inset-top, 48px), constant(safe-area-inset-top, 48px), 20px));
   padding-bottom: 12px;
   padding-left: 20px;
   padding-right: 20px;
   gap: 12px;
+  min-height: 64px;
   /* Fondo semi-transparente para mejor legibilidad */
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
@@ -31,7 +33,8 @@
   background: var(--neo-bg);
   color: var(--ion-text-color);
   padding: 20px;
-  padding-top: calc(100px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+  /* Espacio para header (60px) + safe area (48px mínimo Android) */
+  padding-top: calc(100px + max(48px, env(safe-area-inset-top, 48px), constant(safe-area-inset-top, 48px), 20px));
 }
 
 .noise-overlay {
@@ -211,13 +214,15 @@
 @media (max-width: 768px) {
   .nasa-header {
     width: calc(100% - 24px);
-    padding-top: calc(6px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+    /* Móviles Android: 48px mínimo para barra de estado */
+    padding-top: calc(12px + max(48px, env(safe-area-inset-top, 48px), constant(safe-area-inset-top, 48px)));
     padding-bottom: 8px;
     padding-left: 12px;
     padding-right: 12px;
     flex-wrap: nowrap;
     gap: 8px;
     align-items: center;
+    min-height: 52px;
   }
 
   .logo {
@@ -275,12 +280,12 @@
   }
 
   .content-center {
-    margin-top: calc(15vh + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+    margin-top: calc(15vh + max(48px, env(safe-area-inset-top, 48px), constant(safe-area-inset-top, 48px)));
     margin-bottom: 40px;
   }
 
   .hero-section {
-    padding-top: calc(80px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+    padding-top: calc(80px + max(48px, env(safe-area-inset-top, 48px), constant(safe-area-inset-top, 48px)));
   }
 
   .main-title {
@@ -323,12 +328,14 @@
 @media (max-width: 480px) {
   .nasa-header {
     width: calc(100% - 20px);
-    padding-top: calc(4px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+    /* Móviles pequeños Android: 48px mínimo */
+    padding-top: calc(10px + max(48px, env(safe-area-inset-top, 48px), constant(safe-area-inset-top, 48px)));
     padding-bottom: 6px;
     padding-left: 10px;
     padding-right: 10px;
     gap: 6px;
     flex-wrap: nowrap;
+    min-height: 50px;
   }
 
   .logo {
@@ -371,11 +378,11 @@
   }
 
   .content-center {
-    margin-top: calc(12vh + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+    margin-top: calc(12vh + max(48px, env(safe-area-inset-top, 48px), constant(safe-area-inset-top, 48px)));
   }
 
   .hero-section {
-    padding-top: calc(70px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+    padding-top: calc(70px + max(48px, env(safe-area-inset-top, 48px), constant(safe-area-inset-top, 48px)));
   }
 }
 

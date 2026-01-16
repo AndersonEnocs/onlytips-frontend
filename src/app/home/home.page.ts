@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, inject, signal, CUSTOM_ELEMENTS_SCHEMA, PLATFORM_ID } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ModalController, Platform, ToastController } from '@ionic/angular/standalone';
@@ -7,6 +7,8 @@ import { ApiService } from '../core/services/api.service';
 import { IPublicStatus } from '../shared/interfaces/public-status.interface';
 import { register } from 'swiper/element/bundle';
 import { TranslateModule } from '@ngx-translate/core';
+import { StatusBar, Style } from '@capacitor/status-bar';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-home',
@@ -29,6 +31,19 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.loadProjectStatus();
     register();
+    this.initializeStatusBar();
+  }
+
+  private async initializeStatusBar() {
+    // Solo ejecutar en dispositivos nativos
+    if (Capacitor.isNativePlatform()) {
+      try {
+        await StatusBar.setStyle({ style: Style.Dark });
+        await StatusBar.setOverlaysWebView({ overlay: false });
+      } catch (error) {
+        console.warn('StatusBar plugin not available:', error);
+      }
+    }
   }
 
   loadProjectStatus() {
