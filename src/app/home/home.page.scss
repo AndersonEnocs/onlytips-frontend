@@ -1,12 +1,24 @@
 .nasa-header {
   position: fixed;
-  top: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
   width: calc(100% - 40px);
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 100;
-  padding: 0 20px;
+  /* Asegurar espacio mínimo para barra de estado: 24px Android + safe area */
+  padding-top: calc(8px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+  padding-bottom: 12px;
+  padding-left: 20px;
+  padding-right: 20px;
+  gap: 12px;
+  /* Fondo semi-transparente para mejor legibilidad */
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .hero-section {
@@ -19,6 +31,7 @@
   background: var(--neo-bg);
   color: var(--ion-text-color);
   padding: 20px;
+  padding-top: calc(100px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
 }
 
 .noise-overlay {
@@ -37,6 +50,8 @@
   color: #666;
   cursor: pointer;
   transition: color 0.3s;
+  white-space: nowrap;
+  flex: 0 0 auto;
   &:hover {
     color: var(--tesla-accent);
   }
@@ -45,10 +60,27 @@
 .logo {
   font-size: 24px;
   font-weight: bold;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .fund-counter {
   text-align: right;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.fund-counter .label {
+  font-size: 0.6rem;
+  opacity: 0.8;
+  margin-right: 4px;
+}
+
+.fund-counter .value {
+  font-weight: bold;
 }
 
 .content-center {
@@ -160,8 +192,72 @@
   opacity: 0.9;
 }
 
+/* Tablet Responsiveness */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .logo {
+    font-size: 20px;
+  }
+
+  .main-title {
+    font-size: 36px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
+  .nasa-header {
+    width: calc(100% - 24px);
+    padding-top: calc(6px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+    padding-bottom: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    flex-wrap: nowrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 14px;
+    font-weight: 600;
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 45%;
+  }
+
+  .admin-link {
+    font-size: 0.5rem;
+    letter-spacing: 0.5px;
+    padding: 4px 6px;
+    white-space: nowrap;
+    flex: 0 0 auto;
+    margin-left: auto;
+    margin-right: 8px;
+  }
+
+  .fund-counter {
+    flex: 0 0 auto;
+    text-align: right;
+    font-size: 0.65rem;
+    min-width: 0;
+  }
+
+  .fund-counter .label {
+    display: none;
+  }
+
+  .fund-counter .value {
+    font-size: 0.75rem;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
   .explanation-section {
     margin: 80px 20px;
     padding: 20px;
@@ -179,17 +275,26 @@
   }
 
   .content-center {
-    margin-top: 15vh;
+    margin-top: calc(15vh + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
     margin-bottom: 40px;
   }
 
+  .hero-section {
+    padding-top: calc(80px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+  }
+
   .main-title {
-    font-size: 36px;
+    font-size: 28px;
+    line-height: 1.3;
+    padding: 0 10px;
+    margin-bottom: 15px;
   }
 
   .subtitle {
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 30px;
+    padding: 0 15px;
+    line-height: 1.4;
   }
 
   .decisions-track {
@@ -211,6 +316,66 @@
 
   .card-footer {
     font-size: 10px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .nasa-header {
+    width: calc(100% - 20px);
+    padding-top: calc(4px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+    padding-bottom: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  .logo {
+    font-size: 12px;
+    font-weight: 600;
+    max-width: 40%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .admin-link {
+    font-size: 0.45rem;
+    letter-spacing: 0.5px;
+    padding: 3px 5px;
+    margin-left: auto;
+    margin-right: 6px;
+  }
+
+  .fund-counter {
+    font-size: 0.6rem;
+    flex: 0 0 auto;
+  }
+
+  .fund-counter .value {
+    font-size: 0.7rem;
+    font-weight: bold;
+  }
+
+  .main-title {
+    font-size: 22px;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    line-height: 1.3;
+  }
+
+  .content-center {
+    margin-top: calc(12vh + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
+  }
+
+  .hero-section {
+    padding-top: calc(70px + max(24px, env(safe-area-inset-top, 24px), constant(safe-area-inset-top, 24px)));
   }
 }
 

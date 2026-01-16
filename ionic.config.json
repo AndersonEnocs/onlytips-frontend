@@ -1,5 +1,7 @@
 {
   "name": "only-tips-frontend",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular-standalone"
 }
