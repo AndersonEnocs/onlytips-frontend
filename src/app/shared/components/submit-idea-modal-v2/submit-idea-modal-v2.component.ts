@@ -1,6 +1,5 @@
 import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// IMPORTANTE: Imports explícitos para evitar Tree Shaking en Producción
 import { 
   IonHeader, IonToolbar, IonContent, IonButtons, IonButton, 
   IonIcon, IonList, IonItem, IonInput, IonTextarea, IonLabel, IonNote,
@@ -20,7 +19,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { addIcons } from 'ionicons';
 import { 
   bulbOutline, close, warning, cardOutline, 
-  logoPaypal, logoApple, chevronForward, alertCircleOutline, personOutline, cashOutline } from 'ionicons/icons';
+  logoPaypal, logoApple, chevronForward, alertCircleOutline, personOutline, cashOutline, informationCircleOutline } from 'ionicons/icons';
 import { ApiService } from '../../../core/services/api.service';
 
 interface PaymentMethodType {
@@ -42,7 +41,6 @@ const PAYMENT_METHODS: PaymentMethodType = {
     CommonModule,
     ReactiveFormsModule,
     TranslateModule,
-    // Componentes UI obligatorios
     IonHeader, IonToolbar, IonContent, IonButtons, IonButton, 
     IonIcon, IonItem, IonInput, IonTextarea, IonNote,
     IonSpinner, IonCard, IonCardContent, IonProgressBar
@@ -53,8 +51,6 @@ const PAYMENT_METHODS: PaymentMethodType = {
 export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
 
   private readonly destroy$ = new Subject<void>();
-  
-  // Services
   private readonly fb = inject(FormBuilder);
   private readonly modalCtrl = inject(ModalController);
   private readonly loadingCtrl = inject(LoadingController);
@@ -62,23 +58,21 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
   private readonly translate = inject(TranslateService);
   private readonly api = inject(ApiService);
 
-  // Constants
   readonly PAYMENT_METHODS = PAYMENT_METHODS;
-
-  // Signals
   readonly isSubmitting = signal(false);
   readonly selectedPaymentMethod = signal<string | null>(null);
   readonly checkoutUrl = signal<string | null>(null);
   readonly formErrors = signal<string[]>([]);
+  readonly maxFundingLimit = signal<number>(10000000);
 
-  // Form
   ideaForm!: FormGroup;
 
   constructor() {
-    addIcons({bulbOutline,close,alertCircleOutline,personOutline,cashOutline,cardOutline,logoPaypal,logoApple,warning,chevronForward});
+    addIcons({bulbOutline,close,alertCircleOutline,personOutline,cashOutline,informationCircleOutline,cardOutline,logoPaypal,logoApple,warning,chevronForward});
   }
 
   ngOnInit(): void {
+    this.loadFundingLimit();
     this.initializeForm();
     this.setupFormValidation();
   }
@@ -86,6 +80,31 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private async loadFundingLimit(): Promise<void> {
+    try {
+      const response = await this.api.getFundTotal().toPromise();
+      if (response?.fund) {
+        this.maxFundingLimit.set(response.fund);
+        this.updateFundingGoalValidator();
+      }
+    } catch (error) {
+      console.warn('Could not load funding limit, using default:', error);
+    }
+  }
+
+  private updateFundingGoalValidator(): void {
+    const fundingGoalControl = this.ideaForm.get('fundingGoal');
+    if (fundingGoalControl) {
+      const currentValidators = [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(this.maxFundingLimit())
+      ];
+      fundingGoalControl.setValidators(currentValidators);
+      fundingGoalControl.updateValueAndValidity();
+    }
   }
 
   private initializeForm(): void {
@@ -130,7 +149,7 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
       fundingGoal: [null, [
         Validators.required,
         Validators.min(1),
-        Validators.max(10000000) // Max 10M
+        Validators.max(this.maxFundingLimit())
       ]]
     });
   }
@@ -150,7 +169,6 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
     Object.keys(this.ideaForm.controls).forEach(key => {
       const control = this.ideaForm.get(key);
       if (control?.errors && control.touched) {
-        // Lógica opcional para errores globales si la necesitas
       }
     });
     this.formErrors.set(errors);
@@ -174,9 +192,14 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
       noEmptySpaces: 'submitIdea.errors.noEmptySpaces',
       invalidDomain: 'submitIdea.errors.emailInvalidDomain',
       invalidPhoneFormat: 'submitIdea.errors.phoneNumberInvalid',
-      min: 'submitIdea.errors.fundingGoalMin',
-      max: 'submitIdea.errors.fundingGoalMax'
+      min: 'submitIdea.errors.fundingGoalMin'
     };
+
+    if (errorKey === 'max' && fieldName === 'fundingGoal') {
+      return this.translate.instant('submitIdea.errors.fundingGoalMax', {
+        limit: this.maxFundingLimit().toLocaleString()
+      });
+    }
 
     return messages[errorKey] || 'Campo inválido';
   }
@@ -190,7 +213,6 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
     if (!control.value) return null;
     const email = control.value.toLowerCase();
     const blockedDomains = ['10minutemail.com', 'temp-mail.org'];
-    // Validación segura si no hay @
     if (!email.includes('@')) return null;
     const domain = email.split('@')[1];
     return blockedDomains.includes(domain) ? { invalidDomain: true } : null;
@@ -199,17 +221,14 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
   private phoneNumberValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
 
-    // Remove all non-digit characters except + for international format
     const cleanPhone = control.value.replace(/[^\d+]/g, '');
 
-    // Basic international phone validation
     const phoneRegex = /^\+?[1-9]\d{6,14}$/;
 
     if (!phoneRegex.test(cleanPhone)) {
       return { invalidPhoneFormat: true };
     }
 
-    // Additional checks for common invalid formats
     if (cleanPhone.length < 7 || cleanPhone.length > 15) {
       return { invalidPhoneFormat: true };
     }
@@ -241,7 +260,7 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
         ...this.ideaForm.value,
         paymentMethod: paymentMethod.toUpperCase(),
         isPublic: true,
-        fundingGoal: Number(this.ideaForm.value.fundingGoal) // Ensure it's sent as Number
+        fundingGoal: Number(this.ideaForm.value.fundingGoal)
       };
 
       const response = await this.api.submitIdea(formData).toPromise();

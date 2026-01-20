@@ -184,6 +184,12 @@
         </div>
 
         <div class="section-content">
+          <!-- Funding Goal Info -->
+          <div class="funding-info" *ngIf="maxFundingLimit() > 0">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ 'submitIdea.fundingInfo' | translate:{limit: (maxFundingLimit() | currency:'USD':'symbol':'1.0-0')} }}</span>
+          </div>
+
           <!-- Funding Goal -->
           <ion-item class="form-item funding-goal-item financial-field" [class.ion-invalid]="isFieldInvalid('fundingGoal')">
             <ion-input
@@ -192,9 +198,10 @@
               formControlName="fundingGoal"
               type="number"
               min="1"
-              max="10000000"
+              [max]="maxFundingLimit()"
               step="0.01"
-              [disabled]="isSubmitting()">
+              [disabled]="isSubmitting()"
+              [placeholder]="'Max: ' + (maxFundingLimit() | currency:'USD':'symbol':'1.0-0')">
             </ion-input>
             <div class="currency-prefix">$</div>
             <ion-note slot="error" *ngIf="isFieldInvalid('fundingGoal')">

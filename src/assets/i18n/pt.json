@@ -24,6 +24,7 @@
     "phoneNumber": "NÚMERO DO TELEFONE",
     "address": "ENDEREÇO COMPLETO",
     "fundingGoal": "META DE FINANCIAMENTO",
+    "fundingInfo": "O limite máximo disponível é {{limit}}. Este valor é atualizado dinamicamente.",
     "isPublic": "Visível publicamente na Noosfera",
     "sections": {
       "idea": "IDEIA INOVADORA",
@@ -67,7 +68,7 @@
       "addressMaxLength": "O endereço não pode exceder 200 caracteres",
       "fundingGoalRequired": "A meta de financiamento é obrigatória",
       "fundingGoalMin": "A meta deve ser pelo menos R$ 1",
-      "fundingGoalMax": "A meta não pode exceder R$ 10.000.000",
+      "fundingGoalMax": "A meta não pode exceder R$ {{limit}} (limite do fundo disponível)",
       "noEmptySpaces": "Espaços no início ou final não são permitidos"
     }
   },

@@ -1,12 +1,8 @@
-// =================================================================
-// 1. CONFIGURACIÓN BASE
-// =================================================================
 :host {
   display: block;
-  height: 100vh; // Altura fija para el modal completo
+  height: 100vh;
   max-height: 100vh;
 
-  // Paleta de Colores "Professional Dark"
   --bg-app: #000000;
   --bg-card: #121212;
   --bg-section: rgba(255, 255, 255, 0.02);
@@ -49,7 +45,6 @@
   --spacing-2xl: 48px;
 }
 
-// Configuración del modal para scroll correcto
 :host ::ng-deep ion-modal {
   --height: 90vh;
   --max-height: 90vh;
@@ -68,12 +63,9 @@ ion-content {
   --inner-padding-end: var(--spacing-lg);
   --inner-padding-top: var(--spacing-md);
   --inner-padding-bottom: var(--spacing-md);
-
-  // Scroll interno suave
   --overflow: scroll;
   --webkit-overflow-scrolling: touch;
-
-  height: calc(90vh - 120px); // Altura del modal menos header y footer
+  height: calc(90vh - 120px);
   max-height: calc(90vh - 120px);
 }
 
@@ -82,14 +74,10 @@ ion-content {
   margin: 0 auto;
   padding-bottom: var(--spacing-xl);
 }
-
-// =================================================================
-// 2. HEADER
-// =================================================================
 .modal-header {
   background: var(--bg-app);
   border-bottom: 1px solid var(--border-color);
-  
+
   ion-toolbar {
     --background: transparent;
     --border-width: 0;
@@ -101,7 +89,7 @@ ion-content {
   align-items: center;
   gap: 12px;
   padding-left: 8px;
-  
+
   .header-icon {
     font-size: 22px;
     color: var(--accent-color);
@@ -130,15 +118,10 @@ ion-content {
   }
 }
 
-// =================================================================
-// 3. FORMULARIO Y SECCIONES
-// =================================================================
-
 .idea-form {
   background: transparent;
 }
 
-// SECCIONES DEL FORMULARIO
 .form-section {
   margin-bottom: var(--spacing-2xl);
   background: var(--bg-section);
@@ -187,9 +170,7 @@ ion-content {
   padding-top: var(--spacing-md);
 }
 
-// CAMPOS DEL FORMULARIO - Diseño Profesional
 ion-item.form-item {
-  // Reset Ionic defaults
   --background: transparent !important;
   --border-color: transparent;
   --border-width: 0;
@@ -198,7 +179,6 @@ ion-item.form-item {
   --ripple-color: transparent;
   --min-height: 56px;
 
-  // Diseño profesional
   background: var(--bg-input);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -207,7 +187,6 @@ ion-item.form-item {
   position: relative;
   overflow: hidden;
 
-  // Estados interactivos
   &:hover:not(.ion-focused) {
     background: var(--bg-input-hover);
     border-color: var(--border-hover);
@@ -228,7 +207,6 @@ ion-item.form-item {
     box-shadow: 0 0 0 3px rgba(255, 69, 58, 0.1);
   }
 
-  // Variantes de campos
   &.primary-field {
     --min-height: 64px;
     font-size: 1.1rem;
@@ -244,7 +222,7 @@ ion-item.form-item {
   }
 
   &.name-field {
-    margin-bottom: 0; // Grid handles spacing
+    margin-bottom: 0;
   }
 
   &.address-field {
@@ -252,7 +230,6 @@ ion-item.form-item {
   }
 }
 
-// TEXTO Y LABELS PROFESIONALES
 ion-input, ion-textarea {
   --color: var(--text-primary) !important;
   --placeholder-color: var(--text-muted) !important;
@@ -267,7 +244,6 @@ ion-input, ion-textarea {
   line-height: 1.5;
 }
 
-// Shadow DOM overrides
 ion-input::part(native),
 ion-textarea::part(native) {
   color: var(--text-primary) !important;
@@ -279,7 +255,6 @@ ion-textarea::part(native) {
   line-height: inherit;
 }
 
-// LABELS FLOTANTES ELEGANTES
 ion-input::part(label),
 ion-textarea::part(label) {
   color: var(--text-secondary) !important;
@@ -292,7 +267,6 @@ ion-textarea::part(label) {
   opacity: 0.8;
 }
 
-// Estados del label
 ion-item.ion-focused ion-input::part(label),
 ion-item.ion-focused ion-textarea::part(label) {
   color: var(--text-accent) !important;
@@ -306,7 +280,6 @@ ion-item.ion-invalid.ion-touched ion-textarea::part(label) {
   opacity: 1;
 }
 
-// TEXTAREA PROFESIONAL
 .textarea-item {
   --min-height: 100px;
   align-items: flex-start;
@@ -317,16 +290,12 @@ ion-item.ion-invalid.ion-touched ion-textarea::part(label) {
     line-height: 1.6;
   }
 
-  // Mejor espaciado para textarea
   ion-textarea {
     --padding-top: 24px;
     --padding-bottom: 12px;
   }
 }
 
-// =================================================================
-// GRID LAYOUT PARA NOMBRES - Diseño Profesional
-// =================================================================
 .name-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -334,19 +303,38 @@ ion-item.ion-invalid.ion-touched ion-textarea::part(label) {
   margin-bottom: var(--spacing-md);
 
   .name-field {
-    margin-bottom: 0; // Grid handles spacing
+    margin-bottom: 0;
   }
 
-  // Responsive design
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
     gap: var(--spacing-sm);
   }
 }
 
-// =================================================================
-// CAMPO DE FUNDING GOAL CON PREFIJO MONETARIO
-// =================================================================
+.funding-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(0, 122, 255, 0.08);
+  border: 1px solid rgba(0, 122, 255, 0.2);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+
+  ion-icon {
+    color: var(--accent-color);
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+}
+
 .funding-goal-item {
   position: relative;
   background: linear-gradient(135deg, rgba(0, 122, 255, 0.05) 0%, rgba(0, 122, 255, 0.02) 100%);
@@ -366,7 +354,7 @@ ion-item.ion-invalid.ion-touched ion-textarea::part(label) {
   }
 
   ion-input {
-    --padding-start: 36px; // Espacio para el prefijo $
+    --padding-start: 36px;
   }
 
   ion-input::part(native) {
@@ -379,7 +367,6 @@ ion-item.ion-invalid.ion-touched ion-textarea::part(label) {
     color: var(--text-accent) !important;
   }
 
-  // Estados mejorados
   &:hover {
     border-color: rgba(0, 122, 255, 0.4);
     box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
@@ -392,7 +379,6 @@ ion-item.ion-invalid.ion-touched ion-textarea::part(label) {
   }
 }
 
-// Mensaje de Error (Texto pequeño debajo)
 ion-note {
   font-size: 0.75rem;
   color: var(--error-color);
@@ -403,9 +389,6 @@ ion-note {
   gap: 4px;
 }
 
-// =================================================================
-// SECCIÓN DE PAGO PROFESIONAL
-// =================================================================
 .payment-section {
   margin-top: var(--spacing-xl);
   padding: var(--spacing-xl);
@@ -553,11 +536,6 @@ ion-note {
   margin-top: var(--spacing-lg);
 }
 
-// =================================================================
-// RESPONSIVE DESIGN
-// =================================================================
-
-// Tablets y móviles grandes
 @media (max-width: 768px) {
   :host ::ng-deep ion-modal {
     --height: 95vh;
@@ -598,7 +576,6 @@ ion-note {
   }
 }
 
-// Móviles pequeños
 @media (max-width: 480px) {
   :host ::ng-deep ion-modal {
     --height: 100vh;
@@ -639,7 +616,6 @@ ion-note {
   }
 }
 
-// Animaciones suaves
 .form-section {
   animation: fadeInUp 0.4s ease-out;
 }

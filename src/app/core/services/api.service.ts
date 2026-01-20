@@ -8,7 +8,6 @@ export class ApiService {
   private http = inject(HttpClient);
   private readonly baseUrl = environment.apiUrl;
 
-  // Protocolo de Seguridad para Admin
   private getHeaders() {
     const token = localStorage.getItem('access_token');
     return new HttpHeaders({
@@ -17,16 +16,18 @@ export class ApiService {
     });
   }
 
-  // --- PUBLIC ENDPOINTS ---
   getProjectStatus(): Observable<any> {
     return this.http.get(`${this.baseUrl}/public/project-status`);
+  }
+
+  getFundTotal(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/default-settings/fund-total`);
   }
 
   submitIdea(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/ideas/submit`, data);
   }
 
-  // --- ADMIN ENDPOINTS ---
   login(password: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/login`, { password });
   }

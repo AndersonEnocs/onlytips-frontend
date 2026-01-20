@@ -24,6 +24,7 @@
     "phoneNumber": "PHONE NUMBER",
     "address": "FULL ADDRESS",
     "fundingGoal": "FUNDING GOAL",
+    "fundingInfo": "Maximum available limit is {{limit}}. This value updates dynamically.",
     "isPublic": "Publicly visible in Noosphere",
     "sections": {
       "idea": "INNOVATIVE IDEA",
@@ -67,7 +68,7 @@
       "addressMaxLength": "Address cannot exceed 200 characters",
       "fundingGoalRequired": "Funding goal is required",
       "fundingGoalMin": "Funding goal must be at least $1",
-      "fundingGoalMax": "Funding goal cannot exceed $10,000,000",
+      "fundingGoalMax": "Funding goal cannot exceed ${{limit}} (available fund limit)",
       "noEmptySpaces": "Leading or trailing spaces not allowed"
     }
   },

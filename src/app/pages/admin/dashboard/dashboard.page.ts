@@ -23,10 +23,9 @@ export class DashboardPage implements OnInit {
   private toastCtrl = inject(ToastController);
   private platform = inject(Platform);
   private translate = inject(TranslateService);
-  
+
   private isActionSheetOpening = false;
 
-  // Signals para reactividad de alto nivel
   public ideas = signal<IIdea[]>([]);
   public currentStatus = signal('RECEIVED');
   public currentPage = signal(1);
@@ -38,7 +37,6 @@ export class DashboardPage implements OnInit {
     hasPrevious: false
   });
 
-  // Métricas del dashboard - inicializadas con valores por defecto
   public metrics = signal<IAdminStatistics>({
     totalIdeas: 0,
     pendingPayment: 0,
@@ -49,16 +47,14 @@ export class DashboardPage implements OnInit {
   });
 
   public isLoadingMetrics = signal(false);
-  public fundTotal = signal(50000); // Este vendrá de otro endpoint si es necesario
+  public fundTotal = signal(50000);
 
   ngOnInit() {
     this.loadStatistics();
     this.loadIdeas();
+    this.loadFundTotal();
   }
 
-  /**
-   * Carga las estadísticas del dashboard desde el backend
-   */
   loadStatistics() {
     this.isLoadingMetrics.set(true);
     this.api.getAdminStatistics().subscribe({
@@ -76,15 +72,24 @@ export class DashboardPage implements OnInit {
     });
   }
 
-  /**
-   * Carga las ideas según el estado y página actual
-   */
+  loadFundTotal() {
+    this.api.getFundTotal().subscribe({
+      next: (response) => {
+        if (response?.fund) {
+          this.fundTotal.set(response.fund);
+        }
+      },
+      error: (err) => {
+        console.error('Error loading fund total:', err);
+      }
+    });
+  }
+
   loadIdeas() {
     this.api.getAdminIdeas(this.currentPage(), this.currentStatus()).subscribe({
       next: (res) => {
         this.ideas.set(res.data.data || res.data);
         
-        // Manejar información de paginación del backend
         if (res.data.pagination) {
           const pagination = res.data.pagination;
           this.paginationInfo.set({
@@ -95,7 +100,6 @@ export class DashboardPage implements OnInit {
             hasPrevious: pagination.hasPrevious || false
           });
         } else {
-          // Si no viene paginación, calcularla basándose en los datos
           const total = res.data.total || res.data.data?.length || 0;
           const limit = 10;
           const totalPages = Math.ceil(total / limit);
@@ -131,12 +135,11 @@ export class DashboardPage implements OnInit {
 
   onStatusChange(status: string) {
     this.currentStatus.set(status);
-    this.currentPage.set(1); // Reset a página 1 cuando cambia el filtro
+    this.currentPage.set(1);
     this.loadIdeas();
   }
 
   async openDecisionMenu(idea: IIdea) {
-    // Prevenir múltiples aperturas simultáneas
     if (this.isActionSheetOpening) {
       console.warn('Action sheet is already opening, please wait...');
       return;
@@ -144,7 +147,6 @@ export class DashboardPage implements OnInit {
 
     this.isActionSheetOpening = true;
 
-    // Timeout de seguridad para resetear el flag
     const safetyTimeout = setTimeout(() => {
       if (this.isActionSheetOpening) {
         console.warn('Action sheet opening timeout - resetting flag');
@@ -153,17 +155,14 @@ export class DashboardPage implements OnInit {
     }, 10000);
 
     try {
-      // En web, asegurar que Ionic esté inicializado
       if (this.platform.is('hybrid')) {
         await this.platform.ready();
       }
 
-      // Verificar que el ActionSheetController esté disponible
       if (!this.actionSheetCtrl) {
         throw new Error('ActionSheetController is not available');
       }
 
-      // Pequeño delay para asegurar que el DOM esté listo
       await new Promise(resolve => setTimeout(resolve, 50));
 
       const actionSheet = await this.actionSheetCtrl.create({
@@ -181,7 +180,6 @@ export class DashboardPage implements OnInit {
         throw new Error('Failed to create action sheet instance');
       }
 
-      // Verificar que el action sheet tenga el método present
       if (typeof actionSheet.present !== 'function') {
         throw new Error('ActionSheet instance is invalid - present method not found');
       }
@@ -189,16 +187,14 @@ export class DashboardPage implements OnInit {
       await actionSheet.present();
       clearTimeout(safetyTimeout);
 
-      // Resetear el flag cuando el action sheet se cierre
       actionSheet.onDidDismiss().finally(() => {
         this.isActionSheetOpening = false;
       });
     } catch (error) {
       clearTimeout(safetyTimeout);
       this.isActionSheetOpening = false;
-      console.error('❌ Error opening action sheet:', error);
-      
-      // Log detallado para debugging en producción
+      console.error('Error opening action sheet:', error);
+
       if (error instanceof Error) {
         console.error('Error details:', {
           message: error.message,
@@ -211,24 +207,20 @@ export class DashboardPage implements OnInit {
         });
       }
 
-      // Mostrar error al usuario
       this.showErrorToast(this.translate.instant('admin.dashboard.errorOpeningMenu'));
     }
   }
 
   async promptFeedback(idea: IIdea, status: string) {
     try {
-      // En web, asegurar que Ionic esté inicializado
       if (this.platform.is('hybrid')) {
         await this.platform.ready();
       }
 
-      // Verificar que el AlertController esté disponible
       if (!this.alertCtrl) {
         throw new Error('AlertController is not available');
       }
 
-      // Pequeño delay para asegurar que el DOM esté listo
       await new Promise(resolve => setTimeout(resolve, 50));
 
       const alert = await this.alertCtrl.create({
@@ -279,9 +271,6 @@ export class DashboardPage implements OnInit {
     }
   }
 
-  /**
-   * Método para actualizar el fondo (Fund)
-   */
   async updateFund() {
     const alert = await this.alertCtrl.create({
       header: this.translate.instant('admin.dashboard.updateFund'),
@@ -304,33 +293,28 @@ export class DashboardPage implements OnInit {
           handler: (data): boolean => {
             const amount = parseFloat(data.amount);
 
-            // Validación
             if (!data.amount || isNaN(amount) || amount < 0) {
               this.showErrorToast(this.translate.instant('admin.dashboard.validAmountRequired'));
               return false;
             }
 
-            // Mostrar loading
             const loader = this.loadingCtrl.create({
               message: this.translate.instant('admin.dashboard.updatingFund'),
               spinner: 'lines-sharp'
             });
-            
+
             loader.then(l => l.present());
 
-            // Llamada al endpoint (asíncrona, no bloquea el cierre del alert)
             this.api.updateFund(amount).subscribe({
               next: (response) => {
                 loader.then(l => l.dismiss());
-                
-                // Actualizar el signal con el nuevo valor
+
                 if (response.data?.amount !== undefined) {
                   this.fundTotal.set(response.data.amount);
                 } else {
                   this.fundTotal.set(amount);
                 }
-                
-                // Mostrar éxito
+
                 this.showSuccessToast(this.translate.instant('admin.dashboard.fundUpdated'));
               },
               error: (err) => {
@@ -340,7 +324,6 @@ export class DashboardPage implements OnInit {
               }
             });
 
-            // Retornar true para permitir que el alert se cierre inmediatamente
             return true;
           }
         }
@@ -349,9 +332,6 @@ export class DashboardPage implements OnInit {
     await alert.present();
   }
 
-  /**
-   * Muestra un toast de error
-   */
   private async showErrorToast(message: string) {
     const toast = await this.toastCtrl.create({
       message,
@@ -362,9 +342,6 @@ export class DashboardPage implements OnInit {
     await toast.present();
   }
 
-  /**
-   * Muestra un toast de éxito
-   */
   private async showSuccessToast(message: string) {
     const toast = await this.toastCtrl.create({
       message,
