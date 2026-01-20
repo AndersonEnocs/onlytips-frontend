@@ -14,7 +14,7 @@
       </div>
       <div class="metric-content">
         <h2>{{ isLoadingMetrics() ? '...' : (metrics().totalIdeas | number) }}</h2>
-        <p>Total Ideas</p>
+        <p>{{ 'admin.dashboard.totalIdeas' | translate }}</p>
       </div>
     </div>
 
@@ -24,7 +24,7 @@
       </div>
       <div class="metric-content">
         <h2>{{ isLoadingMetrics() ? '...' : (metrics().selected | number) }}</h2>
-        <p>Selected Ideas</p>
+        <p>{{ 'admin.dashboard.selectedIdeas' | translate }}</p>
       </div>
     </div>
 
@@ -34,7 +34,7 @@
       </div>
       <div class="metric-content">
         <h2>{{ isLoadingMetrics() ? '...' : (metrics().reviewed | number) }}</h2>
-        <p>Reviewed Ideas</p>
+        <p>{{ 'admin.dashboard.reviewedIdeas' | translate }}</p>
       </div>
     </div>
 
@@ -44,7 +44,7 @@
       </div>
       <div class="metric-content">
         <h2>{{ isLoadingMetrics() ? '...' : (metrics().received | number) }}</h2>
-        <p>Received Ideas</p>
+        <p>{{ 'admin.dashboard.receivedIdeas' | translate }}</p>
       </div>
     </div>
 
@@ -54,7 +54,7 @@
       </div>
       <div class="metric-content">
         <h2>{{ isLoadingMetrics() ? '...' : (metrics().pendingPayment | number) }}</h2>
-        <p>Pending Payment</p>
+        <p>{{ 'admin.dashboard.pendingPayment' | translate }}</p>
       </div>
     </div>
 
@@ -64,7 +64,7 @@
       </div>
       <div class="metric-content">
         <h2>{{ isLoadingMetrics() ? '...' : (metrics().notSelected | number) }}</h2>
-        <p>Not Selected</p>
+        <p>{{ 'admin.dashboard.notSelectedLabel' | translate }}</p>
       </div>
     </div>
 
@@ -74,7 +74,7 @@
       </div>
       <div class="metric-content">
         <h2>{{ fundTotal() | currency:'USD':'symbol':'1.0-0' }}</h2>
-        <p>OnlyTips Fund</p>
+        <p>{{ 'admin.dashboard.onlyTipsFund' | translate }}</p>
       </div>
       <button class="btn-update-fund" (click)="updateFund()" aria-label="Update fund">
         <ion-icon name="create-outline"></ion-icon>
@@ -83,10 +83,10 @@
   </div>
 
   <div class="filter-bar">
-    <ion-chip [class.active]="currentStatus() === 'RECEIVED'" (click)="onStatusChange('RECEIVED')">RECEIVED</ion-chip>
-    <ion-chip [class.active]="currentStatus() === 'REVIEWED'" (click)="onStatusChange('REVIEWED')">REVIEWED</ion-chip>
-    <ion-chip [class.active]="currentStatus() === 'SELECTED'" (click)="onStatusChange('SELECTED')">SELECTED</ion-chip>
-    <ion-chip [class.active]="currentStatus() === 'NOT_SELECTED'" (click)="onStatusChange('NOT_SELECTED')">NOT SELECTED</ion-chip>
+    <ion-chip [class.active]="currentStatus() === 'RECEIVED'" (click)="onStatusChange('RECEIVED')">{{ 'admin.dashboard.received' | translate }}</ion-chip>
+    <ion-chip [class.active]="currentStatus() === 'REVIEWED'" (click)="onStatusChange('REVIEWED')">{{ 'admin.dashboard.reviewed' | translate }}</ion-chip>
+    <ion-chip [class.active]="currentStatus() === 'SELECTED'" (click)="onStatusChange('SELECTED')">{{ 'admin.dashboard.selected' | translate }}</ion-chip>
+    <ion-chip [class.active]="currentStatus() === 'NOT_SELECTED'" (click)="onStatusChange('NOT_SELECTED')">{{ 'admin.dashboard.notSelected' | translate }}</ion-chip>
   </div>
 
   <div class="idea-grid">
@@ -112,13 +112,13 @@
         (click)="previousPage()" 
         class="btn-pagination btn-prev">
         <ion-icon name="chevron-back-outline"></ion-icon>
-        PREVIOUS
+        {{ 'admin.dashboard.previous' | translate }}
       </ion-button>
       <ion-button 
         [disabled]="!paginationInfo().hasNext" 
         (click)="nextPage()" 
         class="btn-pagination btn-next">
-        NEXT
+        {{ 'admin.dashboard.next' | translate }}
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-button>
     </div>

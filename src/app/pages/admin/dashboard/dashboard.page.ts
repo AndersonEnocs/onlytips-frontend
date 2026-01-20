@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { AlertController, ActionSheetController, NavController, LoadingController, ToastController, Platform } from '@ionic/angular/standalone';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ApiService } from '../../../core/services/api.service';
 import { IIdea } from '../../../shared/interfaces/idea.interface';
 import { IAdminStatistics } from '../../../shared/interfaces/admin-statistics.interface';
@@ -9,7 +10,7 @@ import { IAdminStatistics } from '../../../shared/interfaces/admin-statistics.in
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [IonicModule, CommonModule],
+  imports: [IonicModule, CommonModule, TranslateModule],
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss']
 })
@@ -21,6 +22,7 @@ export class DashboardPage implements OnInit {
   private loadingCtrl = inject(LoadingController);
   private toastCtrl = inject(ToastController);
   private platform = inject(Platform);
+  private translate = inject(TranslateService);
   
   private isActionSheetOpening = false;
 
@@ -69,7 +71,7 @@ export class DashboardPage implements OnInit {
       error: (err) => {
         console.error('Error loading statistics:', err);
         this.isLoadingMetrics.set(false);
-        this.showErrorToast('Failed to load dashboard statistics');
+        this.showErrorToast(this.translate.instant('admin.dashboard.failedToLoadStats'));
       }
     });
   }
@@ -108,7 +110,7 @@ export class DashboardPage implements OnInit {
       },
       error: (err) => {
         console.error('Error loading ideas:', err);
-        this.showErrorToast('Failed to load ideas');
+        this.showErrorToast(this.translate.instant('admin.dashboard.failedToLoadIdeas'));
       }
     });
   }
@@ -165,13 +167,13 @@ export class DashboardPage implements OnInit {
       await new Promise(resolve => setTimeout(resolve, 50));
 
       const actionSheet = await this.actionSheetCtrl.create({
-        header: `DECISION FOR: ${idea.title.toUpperCase()}`,
+        header: this.translate.instant('admin.dashboard.decisionFor', { title: idea.title.toUpperCase() }),
         cssClass: 'tesla-action-sheet',
         buttons: [
-          { text: 'SELECT IDEA', handler: () => this.promptFeedback(idea, 'SELECTED') },
-          { text: 'REVIEWED', handler: () => this.promptFeedback(idea, 'REVIEWED') },
-          { text: 'NOT SELECTED', role: 'destructive', handler: () => this.promptFeedback(idea, 'NOT_SELECTED') },
-          { text: 'CANCEL', role: 'cancel' }
+          { text: this.translate.instant('admin.dashboard.selectIdea'), handler: () => this.promptFeedback(idea, 'SELECTED') },
+          { text: this.translate.instant('admin.dashboard.reviewedLabel'), handler: () => this.promptFeedback(idea, 'REVIEWED') },
+          { text: this.translate.instant('admin.dashboard.notSelectedLabel2'), role: 'destructive', handler: () => this.promptFeedback(idea, 'NOT_SELECTED') },
+          { text: this.translate.instant('admin.dashboard.cancel'), role: 'cancel' }
         ]
       });
 
@@ -210,7 +212,7 @@ export class DashboardPage implements OnInit {
       }
 
       // Mostrar error al usuario
-      this.showErrorToast('Error al abrir el menú. Por favor, intenta de nuevo.');
+      this.showErrorToast(this.translate.instant('admin.dashboard.errorOpeningMenu'));
     }
   }
 
@@ -230,15 +232,15 @@ export class DashboardPage implements OnInit {
       await new Promise(resolve => setTimeout(resolve, 50));
 
       const alert = await this.alertCtrl.create({
-        header: 'FEEDBACK REPORT',
-        inputs: [{ name: 'feedback', type: 'textarea', placeholder: 'Enter human review feedback...' }],
+        header: this.translate.instant('admin.dashboard.feedbackReport'),
+        inputs: [{ name: 'feedback', type: 'textarea', placeholder: this.translate.instant('admin.dashboard.feedbackPlaceholder') }],
         buttons: [
-          { text: 'ABORT', role: 'cancel' },
+          { text: this.translate.instant('admin.dashboard.abort'), role: 'cancel' },
           {
-            text: 'CONFIRM DECISION',
+            text: this.translate.instant('admin.dashboard.confirmDecision'),
             handler: (data) => {
               const loader = this.loadingCtrl.create({
-                message: 'Processing decision...',
+                message: this.translate.instant('admin.dashboard.processingDecision'),
                 spinner: 'lines-sharp'
               });
               
@@ -258,7 +260,7 @@ export class DashboardPage implements OnInit {
                 error: (err) => {
                   loader.then(l => l.dismiss());
                   console.error('Error making decision:', err);
-                  this.showErrorToast('Failed to process decision');
+                  this.showErrorToast(this.translate.instant('admin.dashboard.failedToProcessDecision'));
                 }
               });
             }
@@ -273,7 +275,7 @@ export class DashboardPage implements OnInit {
       await alert.present();
     } catch (error) {
       console.error('Error opening feedback prompt:', error);
-      this.showErrorToast('Error al abrir el formulario de feedback. Por favor, intenta de nuevo.');
+      this.showErrorToast(this.translate.instant('admin.dashboard.errorOpeningFeedback'));
     }
   }
 
@@ -282,12 +284,12 @@ export class DashboardPage implements OnInit {
    */
   async updateFund() {
     const alert = await this.alertCtrl.create({
-      header: 'UPDATE ONLYTIPS FUND',
+      header: this.translate.instant('admin.dashboard.updateFund'),
       inputs: [
-        { 
-          name: 'amount', 
-          type: 'number', 
-          placeholder: 'New capital amount',
+        {
+          name: 'amount',
+          type: 'number',
+          placeholder: this.translate.instant('admin.dashboard.newAmountPlaceholder'),
           value: this.fundTotal(),
           attributes: {
             min: '0',
@@ -296,21 +298,21 @@ export class DashboardPage implements OnInit {
         }
       ],
       buttons: [
-        { text: 'CANCEL', role: 'cancel' },
+        { text: this.translate.instant('admin.dashboard.cancel'), role: 'cancel' },
         {
-          text: 'UPDATE CORE',
+          text: this.translate.instant('admin.dashboard.updateCore'),
           handler: (data): boolean => {
             const amount = parseFloat(data.amount);
-            
+
             // Validación
             if (!data.amount || isNaN(amount) || amount < 0) {
-              this.showErrorToast('Please enter a valid amount');
+              this.showErrorToast(this.translate.instant('admin.dashboard.validAmountRequired'));
               return false;
             }
 
             // Mostrar loading
             const loader = this.loadingCtrl.create({
-              message: 'Updating fund...',
+              message: this.translate.instant('admin.dashboard.updatingFund'),
               spinner: 'lines-sharp'
             });
             
@@ -329,12 +331,12 @@ export class DashboardPage implements OnInit {
                 }
                 
                 // Mostrar éxito
-                this.showSuccessToast('Fund updated successfully');
+                this.showSuccessToast(this.translate.instant('admin.dashboard.fundUpdated'));
               },
               error: (err) => {
                 loader.then(l => l.dismiss());
                 console.error('Error updating fund:', err);
-                this.showErrorToast(err.error?.message || 'Failed to update fund');
+                this.showErrorToast(err.error?.message || this.translate.instant('admin.dashboard.failedToUpdateFund'));
               }
             });
 

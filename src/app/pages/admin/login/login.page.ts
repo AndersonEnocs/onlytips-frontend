@@ -2,28 +2,29 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, NavController, ToastController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ApiService } from '../../../core/services/api.service';
 
 @Component({
   selector: 'app-admin-login',
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, TranslateModule],
   template: `
     <ion-content [fullscreen]="true">
       <div class="login-wrapper">
         <div class="back-button-container">
           <ion-button fill="clear" class="btn-back" (click)="goBack()">
             <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
-            BACK
+            {{ 'admin.login.back' | translate }}
           </ion-button>
         </div>
         <div class="login-card glass">
-          <div class="nasa-logo">ADMIN ACCESS</div>
-          <p class="instruction">IDENTIFICATION REQUIRED</p>
+          <div class="nasa-logo">{{ 'admin.login.adminAccess' | translate }}</div>
+          <p class="instruction">{{ 'admin.login.identificationRequired' | translate }}</p>
 
-          <input type="password" [(ngModel)]="password" placeholder="••••••••" (keyup.enter)="doLogin()">
+          <input type="password" [(ngModel)]="password" placeholder="{{ 'admin.login.passwordPlaceholder' | translate }}" (keyup.enter)="doLogin()">
 
-          <button class="btn-tesla" (click)="doLogin()">AUTHORIZE</button>
+          <button class="btn-tesla" (click)="doLogin()">{{ 'admin.login.authorize' | translate }}</button>
         </div>
       </div>
     </ion-content>
@@ -126,6 +127,7 @@ export class LoginPage {
   private api = inject(ApiService);
   private nav = inject(NavController);
   private toast = inject(ToastController);
+  private translate = inject(TranslateService);
 
   async doLogin() {
     this.api.login(this.password).subscribe({
@@ -134,7 +136,7 @@ export class LoginPage {
         this.nav.navigateRoot('/admin/dashboard');
       },
       error: async () => {
-        const t = await this.toast.create({ message: 'ACCESS DENIED', duration: 2000, color: 'danger' });
+        const t = await this.toast.create({ message: this.translate.instant('admin.login.accessDenied'), duration: 2000, color: 'danger' });
         t.present();
       }
     });

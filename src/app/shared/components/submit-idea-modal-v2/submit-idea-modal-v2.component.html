@@ -6,7 +6,7 @@
       </div>
       <div class="header-text">
         <h1 class="modal-title">{{ 'submitIdea.title' | translate }}</h1>
-        <p class="modal-subtitle">Comparte tu idea innovadora</p>
+        <p class="modal-subtitle">{{ 'submitIdea.subtitle' | translate }}</p>
       </div>
     </div>
     <ion-buttons slot="end">
@@ -36,63 +36,177 @@
     </ion-card>
 
     <!-- FORMULARIO -->
-    <form *ngIf="ideaForm" [formGroup]="ideaForm">
-      
-      <ion-list lines="none" class="form-list">
-        
-        <!-- Título -->
-        <ion-item class="form-item" [class.ion-invalid]="isFieldInvalid('title')">
-          <ion-input
-            label="{{ 'submitIdea.projectTitle' | translate }}"
-            labelPlacement="floating"
-            formControlName="title"
-            type="text"
-            [counter]="true"
-            maxlength="100"
-            [disabled]="isSubmitting()">
-          </ion-input>
-          <ion-note slot="error" *ngIf="isFieldInvalid('title')">
-            {{ getFieldError('title') | translate }}
-          </ion-note>
-        </ion-item>
+    <form *ngIf="ideaForm" [formGroup]="ideaForm" class="idea-form">
 
-        <!-- Descripción -->
-        <ion-item class="form-item textarea-item" [class.ion-invalid]="isFieldInvalid('description')">
-          <ion-textarea
-            label="{{ 'submitIdea.description' | translate }}"
-            labelPlacement="floating"
-            formControlName="description"
-            [counter]="true"
-            maxlength="2000"
-            rows="5"
-            [autoGrow]="true"
-            [disabled]="isSubmitting()">
-          </ion-textarea>
-          <ion-note slot="error" *ngIf="isFieldInvalid('description')">
-            {{ getFieldError('description') | translate }}
-          </ion-note>
-        </ion-item>
+      <!-- SECCIÓN: IDEA -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-icon">
+            <ion-icon name="bulb-outline"></ion-icon>
+          </div>
+          <h3 class="section-title">{{ 'submitIdea.sections.idea' | translate }}</h3>
+        </div>
 
-        <!-- Email -->
-        <ion-item class="form-item" [class.ion-invalid]="isFieldInvalid('email')">
-          <ion-input
-            label="{{ 'submitIdea.contactEmail' | translate }}"
-            labelPlacement="floating"
-            formControlName="email"
-            type="email"
-            inputmode="email"
-            [disabled]="isSubmitting()">
-          </ion-input>
-          <ion-note slot="error" *ngIf="isFieldInvalid('email')">
-            {{ getFieldError('email') | translate }}
-          </ion-note>
-        </ion-item>
+        <div class="section-content">
+          <!-- Título -->
+          <ion-item class="form-item primary-field" [class.ion-invalid]="isFieldInvalid('title')">
+            <ion-input
+              label="{{ 'submitIdea.projectTitle' | translate }}"
+              labelPlacement="floating"
+              formControlName="title"
+              type="text"
+              [counter]="true"
+              maxlength="100"
+              [disabled]="isSubmitting()">
+            </ion-input>
+            <ion-note slot="error" *ngIf="isFieldInvalid('title')">
+              {{ getFieldError('title') | translate }}
+            </ion-note>
+          </ion-item>
 
-      </ion-list>
+          <!-- Descripción -->
+          <ion-item class="form-item textarea-item primary-field" [class.ion-invalid]="isFieldInvalid('description')">
+            <ion-textarea
+              label="{{ 'submitIdea.description' | translate }}"
+              labelPlacement="floating"
+              formControlName="description"
+              [counter]="true"
+              maxlength="2000"
+              rows="4"
+              [autoGrow]="true"
+              [disabled]="isSubmitting()">
+            </ion-textarea>
+            <ion-note slot="error" *ngIf="isFieldInvalid('description')">
+              {{ getFieldError('description') | translate }}
+            </ion-note>
+          </ion-item>
+        </div>
+      </div>
+
+      <!-- SECCIÓN: CONTACTO -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-icon">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+          <h3 class="section-title">{{ 'submitIdea.sections.contact' | translate }}</h3>
+        </div>
+
+        <div class="section-content">
+          <!-- Email -->
+          <ion-item class="form-item contact-field" [class.ion-invalid]="isFieldInvalid('email')">
+            <ion-input
+              label="{{ 'submitIdea.contactEmail' | translate }}"
+              labelPlacement="floating"
+              formControlName="email"
+              type="email"
+              inputmode="email"
+              [disabled]="isSubmitting()">
+            </ion-input>
+            <ion-note slot="error" *ngIf="isFieldInvalid('email')">
+              {{ getFieldError('email') | translate }}
+            </ion-note>
+          </ion-item>
+
+          <!-- Nombres (Grid Layout - 2 columnas) -->
+          <div class="name-grid">
+            <!-- First Name -->
+            <ion-item class="form-item name-field" [class.ion-invalid]="isFieldInvalid('firstName')">
+              <ion-input
+                label="{{ 'submitIdea.firstName' | translate }}"
+                labelPlacement="floating"
+                formControlName="firstName"
+                type="text"
+                maxlength="50"
+                [disabled]="isSubmitting()">
+              </ion-input>
+              <ion-note slot="error" *ngIf="isFieldInvalid('firstName')">
+                {{ getFieldError('firstName') | translate }}
+              </ion-note>
+            </ion-item>
+
+            <!-- Last Name -->
+            <ion-item class="form-item name-field" [class.ion-invalid]="isFieldInvalid('lastName')">
+              <ion-input
+                label="{{ 'submitIdea.lastName' | translate }}"
+                labelPlacement="floating"
+                formControlName="lastName"
+                type="text"
+                maxlength="50"
+                [disabled]="isSubmitting()">
+              </ion-input>
+              <ion-note slot="error" *ngIf="isFieldInvalid('lastName')">
+                {{ getFieldError('lastName') | translate }}
+              </ion-note>
+            </ion-item>
+          </div>
+
+          <!-- Phone Number -->
+          <ion-item class="form-item contact-field" [class.ion-invalid]="isFieldInvalid('phoneNumber')">
+            <ion-input
+              label="{{ 'submitIdea.phoneNumber' | translate }}"
+              labelPlacement="floating"
+              formControlName="phoneNumber"
+              type="tel"
+              inputmode="tel"
+              placeholder="+1234567890"
+              [disabled]="isSubmitting()">
+            </ion-input>
+            <ion-note slot="error" *ngIf="isFieldInvalid('phoneNumber')">
+              {{ getFieldError('phoneNumber') | translate }}
+            </ion-note>
+          </ion-item>
+
+          <!-- Address -->
+          <ion-item class="form-item contact-field address-field" [class.ion-invalid]="isFieldInvalid('address')">
+            <ion-input
+              label="{{ 'submitIdea.address' | translate }}"
+              labelPlacement="floating"
+              formControlName="address"
+              type="text"
+              maxlength="200"
+              [disabled]="isSubmitting()">
+            </ion-input>
+            <ion-note slot="error" *ngIf="isFieldInvalid('address')">
+              {{ getFieldError('address') | translate }}
+            </ion-note>
+          </ion-item>
+        </div>
+      </div>
+
+      <!-- SECCIÓN: FINANCIAMIENTO -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-icon">
+            <ion-icon name="cash-outline"></ion-icon>
+          </div>
+          <h3 class="section-title">{{ 'submitIdea.sections.financial' | translate }}</h3>
+        </div>
+
+        <div class="section-content">
+          <!-- Funding Goal -->
+          <ion-item class="form-item funding-goal-item financial-field" [class.ion-invalid]="isFieldInvalid('fundingGoal')">
+            <ion-input
+              label="{{ 'submitIdea.fundingGoal' | translate }}"
+              labelPlacement="floating"
+              formControlName="fundingGoal"
+              type="number"
+              min="1"
+              max="10000000"
+              step="0.01"
+              [disabled]="isSubmitting()">
+            </ion-input>
+            <div class="currency-prefix">$</div>
+            <ion-note slot="error" *ngIf="isFieldInvalid('fundingGoal')">
+              {{ getFieldError('fundingGoal') | translate }}
+            </ion-note>
+          </ion-item>
+        </div>
+      </div>
 
       <!-- SECCIÓN DE PAGO -->
       <div class="payment-section">
-        <p class="section-label">MÉTODO DE PAGO</p>
+        <p class="section-label">{{ 'submitIdea.paymentSection' | translate }}</p>
 
         <div class="payment-grid">
           
@@ -106,8 +220,8 @@
               <ion-icon name="card-outline"></ion-icon>
             </div>
             <div class="card-info">
-              <h4>Pago con Stripe</h4>
-              <p>Crédito o Débito</p>
+              <h4>{{ 'submitIdea.stripeTitle' | translate }}</h4>
+              <p>{{ 'submitIdea.stripeDescription' | translate }}</p>
             </div>
             <div class="card-price">
               $9.99
@@ -125,8 +239,8 @@
               <ion-icon name="logo-paypal"></ion-icon>
             </div>
             <div class="card-info">
-              <h4>PayPal</h4>
-              <p>Pago seguro</p>
+              <h4>{{ 'submitIdea.paypalTitle' | translate }}</h4>
+              <p>{{ 'submitIdea.paypalDescription' | translate }}</p>
             </div>
             <div class="card-price">
               $9.99
@@ -144,8 +258,8 @@
               <ion-icon name="logo-apple"></ion-icon>
             </div>
             <div class="card-info">
-              <h4>Apple Pay</h4>
-              <p>Rápido y simple</p>
+              <h4>{{ 'submitIdea.applePayTitle' | translate }}</h4>
+              <p>{{ 'submitIdea.applePayDescription' | translate }}</p>
             </div>
             <div class="card-price">
               $9.99
@@ -159,9 +273,3 @@
     </form>
   </div>
 </ion-content>
-
-<div class="modal-footer">
-  <ion-button expand="block" fill="outline" color="medium" (click)="dismiss()" [disabled]="isSubmitting()">
-    Cancelar
-  </ion-button>
-</div>

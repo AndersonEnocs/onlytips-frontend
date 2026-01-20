@@ -3,29 +3,84 @@
 // =================================================================
 :host {
   display: block;
-  height: 100%;
+  height: 100vh; // Altura fija para el modal completo
+  max-height: 100vh;
 
-  // Paleta de Colores "Dark Premium"
+  // Paleta de Colores "Professional Dark"
   --bg-app: #000000;
   --bg-card: #121212;
-  --bg-input: rgba(255, 255, 255, 0.06); // Gris translúcido sutil
-  --bg-input-hover: rgba(255, 255, 255, 0.1);
-  
+  --bg-section: rgba(255, 255, 255, 0.02);
+  --bg-input: rgba(255, 255, 255, 0.05);
+  --bg-input-hover: rgba(255, 255, 255, 0.08);
+  --bg-input-focus: rgba(0, 122, 255, 0.03);
+
   --text-white: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
   --text-placeholder: #666666;
   --text-label: #8e8e93;
-  
-  --border-color: rgba(255, 255, 255, 0.12);
-  --accent-color: #007aff; // Azul iOS
-  --error-color: #ff453a;  // Rojo iOS Dark Mode
-  
-  --radius-input: 12px;
-  --radius-card: 16px;
+  --text-accent: #007aff;
+
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --border-focus: rgba(0, 122, 255, 0.4);
+  --border-section: rgba(255, 255, 255, 0.06);
+
+  --accent-color: #007aff;
+  --accent-hover: #4da3ff;
+  --error-color: #ff453a;
+  --success-color: #30d158;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+}
+
+// Configuración del modal para scroll correcto
+:host ::ng-deep ion-modal {
+  --height: 90vh;
+  --max-height: 90vh;
+  --border-radius: var(--radius-lg);
+  --box-shadow: var(--shadow-lg);
 }
 
 ion-content {
   --background: var(--bg-app);
   --color: var(--text-white);
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --inner-padding-start: var(--spacing-lg);
+  --inner-padding-end: var(--spacing-lg);
+  --inner-padding-top: var(--spacing-md);
+  --inner-padding-bottom: var(--spacing-md);
+
+  // Scroll interno suave
+  --overflow: scroll;
+  --webkit-overflow-scrolling: touch;
+
+  height: calc(90vh - 120px); // Altura del modal menos header y footer
+  max-height: calc(90vh - 120px);
+}
+
+.content-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: var(--spacing-xl);
 }
 
 // =================================================================
@@ -76,102 +131,265 @@ ion-content {
 }
 
 // =================================================================
-// 3. ESTILOS DE INPUTS (CLEAN BOX STYLE)
+// 3. FORMULARIO Y SECCIONES
 // =================================================================
 
-// Contenedor de la lista (Reset)
-ion-list {
-  background: transparent !important;
-  padding: 0;
-  margin: 20px 0;
+.idea-form {
+  background: transparent;
 }
 
-// EL ITEM (La caja del input)
+// SECCIONES DEL FORMULARIO
+.form-section {
+  margin-bottom: var(--spacing-2xl);
+  background: var(--bg-section);
+  border: 1px solid var(--border-section);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+
+  &:last-child {
+    margin-bottom: var(--spacing-xl);
+  }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.01);
+
+  .section-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 122, 255, 0.1);
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+}
+
+.section-content {
+  padding: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+}
+
+// CAMPOS DEL FORMULARIO - Diseño Profesional
 ion-item.form-item {
-  // 1. Fondo y Borde Base
-  --background: var(--bg-input) !important;
-  --border-radius: var(--radius-input);
-  --border-color: transparent; // Ocultamos borde nativo Ionic
-  
-  // 2. Eliminamos líneas nativas "feas" (Highlight y Border Bottom)
+  // Reset Ionic defaults
+  --background: transparent !important;
+  --border-color: transparent;
   --border-width: 0;
   --inner-border-width: 0;
-  --highlight-height: 0; 
-  --ripple-color: transparent; // Quitamos efecto ripple si molesta
-
-  // 3. Dimensiones y Espaciado
+  --highlight-height: 0;
+  --ripple-color: transparent;
   --min-height: 56px;
-  --padding-start: 16px;
-  --inner-padding-end: 16px;
-  margin-bottom: 16px;
-  
-  // 4. Borde Personalizado (Control total)
+
+  // Diseño profesional
+  background: var(--bg-input);
   border: 1px solid var(--border-color);
-  transition: all 0.2s ease-in-out;
-  
-  // Asegura visibilidad en producción
-  display: flex;
-  visibility: visible !important;
-  opacity: 1 !important;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 
-  // ESTADO: Hover
+  // Estados interactivos
   &:hover:not(.ion-focused) {
-    --background: var(--bg-input-hover) !important;
-    border-color: rgba(255, 255, 255, 0.25);
+    background: var(--bg-input-hover);
+    border-color: var(--border-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
   }
 
-  // ESTADO: Foco (Borde Azul brillante)
   &.ion-focused {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 1px var(--accent-color); // Efecto glow sutil
-    --background: rgba(0, 122, 255, 0.05) !important; // Tinte azul muy sutil
+    background: var(--bg-input-focus);
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1), var(--shadow-md);
+    transform: translateY(-1px);
   }
 
-  // ESTADO: Error (Borde Rojo)
   &.ion-invalid.ion-touched {
+    background: rgba(255, 69, 58, 0.05);
     border-color: var(--error-color);
-    --highlight-color-invalid: transparent; // Asegurar que Ionic no ponga su línea roja
+    box-shadow: 0 0 0 3px rgba(255, 69, 58, 0.1);
+  }
+
+  // Variantes de campos
+  &.primary-field {
+    --min-height: 64px;
+    font-size: 1.1rem;
+  }
+
+  &.contact-field {
+    --min-height: 56px;
+  }
+
+  &.financial-field {
+    --min-height: 60px;
+    background: linear-gradient(135deg, var(--bg-input) 0%, rgba(0, 122, 255, 0.02) 100%);
+  }
+
+  &.name-field {
+    margin-bottom: 0; // Grid handles spacing
+  }
+
+  &.address-field {
+    --min-height: 58px;
   }
 }
 
-// EL TEXTO DENTRO DEL INPUT
+// TEXTO Y LABELS PROFESIONALES
 ion-input, ion-textarea {
-  --color: var(--text-white) !important;
-  --placeholder-color: var(--text-placeholder) !important;
+  --color: var(--text-primary) !important;
+  --placeholder-color: var(--text-muted) !important;
   --placeholder-opacity: 1 !important;
-  --padding-top: 18px;    // Espacio para label flotante
-  --padding-bottom: 6px; 
-  font-size: 1rem;
+  --padding-start: var(--spacing-md);
+  --padding-end: var(--spacing-md);
+  --padding-top: 20px;
+  --padding-bottom: 8px;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
 }
 
-// Penetración Shadow DOM (Para que el texto sea blanco sí o sí)
+// Shadow DOM overrides
 ion-input::part(native),
 ion-textarea::part(native) {
-  color: var(--text-white) !important;
-  caret-color: var(--accent-color); // Cursor azul
+  color: var(--text-primary) !important;
+  caret-color: var(--accent-color);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
 }
 
-// EL LABEL FLOTANTE
+// LABELS FLOTANTES ELEGANTES
 ion-input::part(label),
 ion-textarea::part(label) {
-  color: var(--text-label) !important;
+  color: var(--text-secondary) !important;
   font-weight: 500;
-  font-size: 0.9rem;
-  margin-bottom: 2px;
-  transition: color 0.2s ease;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.8;
 }
 
-// Color del label cuando hay error
+// Estados del label
+ion-item.ion-focused ion-input::part(label),
+ion-item.ion-focused ion-textarea::part(label) {
+  color: var(--text-accent) !important;
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
 ion-item.ion-invalid.ion-touched ion-input::part(label),
 ion-item.ion-invalid.ion-touched ion-textarea::part(label) {
   color: var(--error-color) !important;
+  opacity: 1;
 }
 
-// Ajuste específico para Textarea
+// TEXTAREA PROFESIONAL
 .textarea-item {
-  --min-height: 120px;
+  --min-height: 100px;
   align-items: flex-start;
-  padding-top: 8px;
+
+  ion-textarea::part(native) {
+    min-height: 80px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  // Mejor espaciado para textarea
+  ion-textarea {
+    --padding-top: 24px;
+    --padding-bottom: 12px;
+  }
+}
+
+// =================================================================
+// GRID LAYOUT PARA NOMBRES - Diseño Profesional
+// =================================================================
+.name-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+
+  .name-field {
+    margin-bottom: 0; // Grid handles spacing
+  }
+
+  // Responsive design
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+}
+
+// =================================================================
+// CAMPO DE FUNDING GOAL CON PREFIJO MONETARIO
+// =================================================================
+.funding-goal-item {
+  position: relative;
+  background: linear-gradient(135deg, rgba(0, 122, 255, 0.05) 0%, rgba(0, 122, 255, 0.02) 100%);
+  border: 1px solid rgba(0, 122, 255, 0.2);
+
+  .currency-prefix {
+    position: absolute;
+    left: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-accent);
+    font-weight: 600;
+    font-size: 1.1rem;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
+  ion-input {
+    --padding-start: 36px; // Espacio para el prefijo $
+  }
+
+  ion-input::part(native) {
+    padding-left: 36px !important;
+    font-weight: 500;
+    color: var(--success-color) !important;
+  }
+
+  ion-input::part(label) {
+    color: var(--text-accent) !important;
+  }
+
+  // Estados mejorados
+  &:hover {
+    border-color: rgba(0, 122, 255, 0.4);
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
+  }
+
+  &.ion-focused {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15), var(--shadow-md);
+    background: rgba(0, 122, 255, 0.05);
+  }
 }
 
 // Mensaje de Error (Texto pequeño debajo)
@@ -186,19 +404,24 @@ ion-note {
 }
 
 // =================================================================
-// 4. SECCIÓN DE PAGO (Tarjetas)
+// SECCIÓN DE PAGO PROFESIONAL
 // =================================================================
 .payment-section {
-  margin-top: 32px;
-  
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-xl);
+  background: var(--bg-section);
+  border: 1px solid var(--border-section);
+  border-radius: var(--radius-lg);
+
   .section-label {
-    color: var(--text-label);
-    font-size: 0.7rem;
-    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin-bottom: 12px;
-    padding-left: 4px;
+    letter-spacing: 1.5px;
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    display: block;
   }
 }
 
@@ -324,7 +547,114 @@ ion-note {
 }
 
 .modal-footer {
-  padding: 16px 20px 30px; // Extra padding para Safe Area
+  padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-2xl);
   background: var(--bg-app);
   border-top: 1px solid var(--border-color);
+  margin-top: var(--spacing-lg);
+}
+
+// =================================================================
+// RESPONSIVE DESIGN
+// =================================================================
+
+// Tablets y móviles grandes
+@media (max-width: 768px) {
+  :host ::ng-deep ion-modal {
+    --height: 95vh;
+    --max-height: 95vh;
+  }
+
+  ion-content {
+    height: calc(95vh - 100px);
+    max-height: calc(95vh - 100px);
+    --inner-padding-start: var(--spacing-md);
+    --inner-padding-end: var(--spacing-md);
+  }
+
+  .content-wrapper {
+    padding-bottom: var(--spacing-lg);
+  }
+
+  .section-header {
+    padding: var(--spacing-md);
+    gap: var(--spacing-sm);
+
+    .section-title {
+      font-size: 0.8rem;
+    }
+  }
+
+  .section-content {
+    padding: var(--spacing-md);
+  }
+
+  .form-section {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .payment-section {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+}
+
+// Móviles pequeños
+@media (max-width: 480px) {
+  :host ::ng-deep ion-modal {
+    --height: 100vh;
+    --max-height: 100vh;
+    --border-radius: 0;
+  }
+
+  ion-content {
+    height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
+    --inner-padding-start: var(--spacing-sm);
+    --inner-padding-end: var(--spacing-sm);
+  }
+
+  .name-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .section-header {
+    .section-title {
+      font-size: 0.75rem;
+    }
+
+    .section-icon {
+      width: 28px;
+      height: 28px;
+      font-size: 14px;
+    }
+  }
+
+  .section-content {
+    padding: var(--spacing-sm);
+  }
+
+  .modal-footer {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+}
+
+// Animaciones suaves
+.form-section {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.form-section:nth-child(1) { animation-delay: 0.1s; }
+.form-section:nth-child(2) { animation-delay: 0.2s; }
+.form-section:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

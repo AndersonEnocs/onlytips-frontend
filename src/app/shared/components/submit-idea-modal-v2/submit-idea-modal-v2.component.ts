@@ -20,8 +20,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { addIcons } from 'ionicons';
 import { 
   bulbOutline, close, warning, cardOutline, 
-  logoPaypal, logoApple, chevronForward, alertCircleOutline 
-} from 'ionicons/icons';
+  logoPaypal, logoApple, chevronForward, alertCircleOutline, personOutline, cashOutline } from 'ionicons/icons';
 import { ApiService } from '../../../core/services/api.service';
 
 interface PaymentMethodType {
@@ -45,7 +44,7 @@ const PAYMENT_METHODS: PaymentMethodType = {
     TranslateModule,
     // Componentes UI obligatorios
     IonHeader, IonToolbar, IonContent, IonButtons, IonButton, 
-    IonIcon, IonList, IonItem, IonInput, IonTextarea, IonNote,
+    IonIcon, IonItem, IonInput, IonTextarea, IonNote,
     IonSpinner, IonCard, IonCardContent, IonProgressBar
   ],
   templateUrl: './submit-idea-modal-v2.component.html',
@@ -76,7 +75,7 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
   ideaForm!: FormGroup;
 
   constructor() {
-    addIcons({ bulbOutline, close, warning, cardOutline, logoPaypal, logoApple, chevronForward, alertCircleOutline });
+    addIcons({bulbOutline,close,alertCircleOutline,personOutline,cashOutline,cardOutline,logoPaypal,logoApple,warning,chevronForward});
   }
 
   ngOnInit(): void {
@@ -106,6 +105,32 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
         Validators.required,
         Validators.email,
         this.emailDomainValidator
+      ]],
+      firstName: ['', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50),
+        this.noEmptySpacesValidator
+      ]],
+      lastName: ['', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50),
+        this.noEmptySpacesValidator
+      ]],
+      phoneNumber: ['', [
+        Validators.required,
+        this.phoneNumberValidator
+      ]],
+      address: ['', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(200)
+      ]],
+      fundingGoal: [null, [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(10000000) // Max 10M
       ]]
     });
   }
@@ -147,7 +172,10 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
       maxlength: `submitIdea.errors.${fieldName}MaxLength`,
       email: 'submitIdea.errors.emailInvalid',
       noEmptySpaces: 'submitIdea.errors.noEmptySpaces',
-      invalidDomain: 'submitIdea.errors.emailInvalidDomain'
+      invalidDomain: 'submitIdea.errors.emailInvalidDomain',
+      invalidPhoneFormat: 'submitIdea.errors.phoneNumberInvalid',
+      min: 'submitIdea.errors.fundingGoalMin',
+      max: 'submitIdea.errors.fundingGoalMax'
     };
 
     return messages[errorKey] || 'Campo inválido';
@@ -168,6 +196,27 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
     return blockedDomains.includes(domain) ? { invalidDomain: true } : null;
   }
 
+  private phoneNumberValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+
+    // Remove all non-digit characters except + for international format
+    const cleanPhone = control.value.replace(/[^\d+]/g, '');
+
+    // Basic international phone validation
+    const phoneRegex = /^\+?[1-9]\d{6,14}$/;
+
+    if (!phoneRegex.test(cleanPhone)) {
+      return { invalidPhoneFormat: true };
+    }
+
+    // Additional checks for common invalid formats
+    if (cleanPhone.length < 7 || cleanPhone.length > 15) {
+      return { invalidPhoneFormat: true };
+    }
+
+    return null;
+  }
+
   async onSubmit(paymentMethod: string): Promise<void> {
     if (this.ideaForm.invalid) {
       this.ideaForm.markAllAsTouched();
@@ -181,7 +230,7 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
     this.selectedPaymentMethod.set(paymentMethod);
 
     const loading = await this.loadingCtrl.create({
-      message: this.translate.instant('submitIdea.processing') || 'Procesando...',
+      message: this.translate.instant('submitIdea.processing'),
       spinner: 'lines-sharp',
       cssClass: 'tesla-loading'
     });
@@ -190,7 +239,9 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
     try {
       const formData = {
         ...this.ideaForm.value,
-        paymentMethod: paymentMethod.toUpperCase()
+        paymentMethod: paymentMethod.toUpperCase(),
+        isPublic: true,
+        fundingGoal: Number(this.ideaForm.value.fundingGoal) // Ensure it's sent as Number
       };
 
       const response = await this.api.submitIdea(formData).toPromise();
