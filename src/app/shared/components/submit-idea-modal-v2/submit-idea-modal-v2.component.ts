@@ -63,7 +63,7 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
   readonly selectedPaymentMethod = signal<string | null>(null);
   readonly checkoutUrl = signal<string | null>(null);
   readonly formErrors = signal<string[]>([]);
-  readonly maxFundingLimit = signal<number>(10000000);
+  readonly maxFundingLimit = signal<number>(10000);
 
   ideaForm!: FormGroup;
 
@@ -84,9 +84,9 @@ export class SubmitIdeaModalV2Component implements OnInit, OnDestroy {
 
   private async loadFundingLimit(): Promise<void> {
     try {
-      const response = await this.api.getFundTotal().toPromise();
-      if (response?.fund) {
-        this.maxFundingLimit.set(response.fund);
+      const response = await this.api.getProjectStatus().toPromise();
+      if (response?.data?.fundTotal) {
+        this.maxFundingLimit.set(response.data.fundTotal);
         this.updateFundingGoalValidator();
       }
     } catch (error) {
